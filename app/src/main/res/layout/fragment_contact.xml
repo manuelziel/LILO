@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/logo_lilo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/description_lilo_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/lilo_logo" />
+
+            <TextView
+                android:id="@+id/txtLogoLilo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/global_app_company_name"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/logo_lilo"
+                app:layout_constraintStart_toStartOf="@+id/logo_lilo"
+                app:layout_constraintTop_toBottomOf="@+id/logo_lilo" />
+
+            <TextView
+                android:id="@+id/txtFirst"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="24dp"
+                android:text="@string/contact_first_text"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLogoLilo" />
+
+            <ImageView
+                android:id="@+id/imageMail"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:contentDescription="@string/description_image_mail"
+                app:layout_constraintStart_toStartOf="@+id/txtFirst"
+                app:layout_constraintTop_toBottomOf="@+id/txtFirst"
+                app:srcCompat="@drawable/ic_menu_alternate_email"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/txtMailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@string/contact_mail_contact"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageMail"
+                app:layout_constraintStart_toEndOf="@+id/imageMail"
+                app:layout_constraintTop_toTopOf="@+id/imageMail" />
+
+            <ImageView
+                android:id="@+id/imageSignal"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/description_image_signal"
+                app:layout_constraintEnd_toEndOf="@+id/imageMail"
+                app:layout_constraintStart_toStartOf="@+id/imageMail"
+                app:layout_constraintTop_toBottomOf="@+id/imageMail"
+                app:srcCompat="@drawable/signal" />
+
+            <TextView
+                android:id="@+id/txtSignalGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@string/contact_signal_join"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageSignal"
+                app:layout_constraintStart_toEndOf="@+id/imageSignal"
+                app:layout_constraintTop_toTopOf="@+id/imageSignal" />
+
+            <ImageView
+                android:id="@+id/imageTelegram"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/description_image_telegram"
+                app:layout_constraintEnd_toEndOf="@+id/imageSignal"
+                app:layout_constraintStart_toStartOf="@+id/imageSignal"
+                app:layout_constraintTop_toBottomOf="@+id/imageSignal"
+                app:srcCompat="@drawable/telegram" />
+
+            <TextView
+                android:id="@+id/txtTelegramGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@string/contact_telegram_join"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageTelegram"
+                app:layout_constraintStart_toEndOf="@+id/imageTelegram"
+                app:layout_constraintTop_toTopOf="@+id/imageTelegram" />
+
+            <ImageView
+                android:id="@+id/imageFacebook"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/description_image_facebook"
+                app:layout_constraintEnd_toEndOf="@+id/imageTelegram"
+                app:layout_constraintStart_toStartOf="@+id/imageTelegram"
+                app:layout_constraintTop_toBottomOf="@+id/imageTelegram"
+                app:srcCompat="@drawable/facebook" />
+
+            <TextView
+                android:id="@+id/txtFacebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@string/contact_facebook_follow"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageFacebook"
+                app:layout_constraintStart_toEndOf="@+id/imageFacebook"
+                app:layout_constraintTop_toTopOf="@+id/imageFacebook" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory>
+        <Preference
+            app:icon="@drawable/ic_delete_forever"
+            app:key="pref_key_user_reset"
+            app:selectable="true"
+            app:title="@string/pref_user_reset"
+            app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            app:allowDividerAbove="true"
+            app:allowDividerBelow="true"
+            app:icon="@drawable/ic_app_shortcut"
+            app:title="@string/pref_user_about_title" />
+
+        <Preference
+            app:icon="@drawable/ic_code"
+            app:key="pref_key_user_app_version"
+            app:selectable="true"
+            app:summary="@string/global_app_code"
+            app:title="@string/global_app_version" />
+
+        <Preference
+            app:icon="@drawable/ic_communication"
+            app:key="pref_key_user_app_feedback"
+            app:selectable="true"
+            app:summary="@string/pref_user_feedback_summary"
+            app:title="@string/pref_user_feedback_title" />
+
+        <Preference
+            app:icon="@drawable/ic_api"
+            app:key="pref_key_user_third_pary_software"
+            app:selectable="true"
+            app:summary="@string/pref_user_third_party_software_summary"
+            app:title="@string/pref_user_third_party_software_title" />
+
+        <Preference
+            app:icon="@drawable/open_source"
+            app:key="pref_key_user_licence"
+            app:selectable="true"
+            app:summary="@string/pref_user_license_summary"
+            app:title="@string/pref_user_license_title" />
+
+        <Preference
+            app:allowDividerAbove="true"
+            app:allowDividerBelow="true"
+            app:icon="@drawable/ic_science"
+            app:key="pref_key_user_beta"
+            app:selectable="true"
+            app:title="@string/pref_user_beta_title" />
+
+        <SwitchPreference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_notifications"
+            app:key="pref_key_user_event_notifications"
+            app:selectable="true"
+            app:summary="@string/global_app_beta"
+            app:title="@string/pref_user_event_notification"
+            app:useSimpleSummaryProvider="false" />
+
+        <SwitchPreference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_notifications"
+            app:key="pref_key_user_article_notifications"
+            app:selectable="true"
+            app:summary="@string/global_app_beta"
+            app:title="@string/pref_user_article_notification"
+            app:useSimpleSummaryProvider="false" />
+
+        <Preference
+            app:allowDividerAbove="true"
+            app:allowDividerBelow="true"
+            app:icon="@drawable/ic_developer_mode"
+            app:key="pref_key_user_developer"
+            app:title="@string/pref_user_developer_title" />
+
+        <SwitchPreference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_pest_control"
+            app:key="pref_key_user_debug"
+            app:selectable="true"
+            app:summary="@string/global_app_beta"
+            app:title="@string/pref_user_debug"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

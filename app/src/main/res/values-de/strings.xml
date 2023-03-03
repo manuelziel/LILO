@@ -1,0 +1,130 @@
+<resources>
+    //! -- GERMAN LANGUAGE-->
+    //! -- Global Preferences-->
+    <string name="global_app_company_name">Linke Liste Ortenau e.V</string>
+    <string name="app_name">LiLO</string>
+    <string name="global_app_version_code">Versions Code</string>
+    <string name="global_app_code">Code</string>
+    <string name="global_app_version">Version</string>
+    <string name="global_app_beta">(BETA)</string>
+
+    //! -- User Preferences-->
+    <string name="pref_user_title">Einstellungen</string>
+    <string name="pref_user_reset">App Zurücksetzen</string>
+    <string name="pref_user_about_title">Über</string>
+    <string name="pref_user_feedback_title">Feedback</string>
+    <string name="pref_user_feedback_summary">Feedback? Wir würden es gerne hören. Oder melden Sie einen Fehler.</string>
+    <string name="pref_user_third_party_software_title">Third Party Notices</string>
+    <string name="pref_user_third_party_software_summary">Süße Software, die uns geholfen hat.</string>
+    <string name="pref_user_license_title">LICENSE</string>
+    <string name="pref_user_license_summary">Verteilt unter der Open Source Apache 2.0-Lizenz.</string>
+    <string name="pref_user_beta_title">BETA</string>
+    <string name="pref_user_event_notification">Event-Notifications anzeigen</string>
+    <string name="pref_user_article_notification">Artikel-Notification anzeigen</string>
+    <string name="pref_user_developer_title">Entwicklungsoptionen</string>
+    <string name="pref_user_debug">Debug Modus</string>
+
+    //! -- Privacy Policy-->
+    <string name="title_privacy_policy">Datenschutzerklärung</string>
+    <string name="button_privacy_police_agree">ZUSTIMMEN UND WEITER</string>
+    <string name="button_privacy_police_decline">ABLEHNEN UND BEENDEN</string>
+
+    //! -- Navigation Controller-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Linke Liste Ortenau e.V</string>
+    <string name="nav_header_subtitle">Mensch im Mittelpunkt, nicht der Profit</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Einstellungen</string>
+
+    <string name="menu_home">Startseite</string>
+    <string name="menu_search">Suche</string>
+    <string name="menu_event">Termine</string>
+
+    <string name="menu_program">Programm</string>
+    <string name="menu_health_care">Gesundheitsvorsorge</string>
+    <string name="menu_local_transport">Nahverkehr</string>
+    <string name="menu_housing">Wohnungsbau</string>
+    <string name="menu_social">Soziales</string>
+    <string name="menu_training">Bildung</string>
+    <string name="menu_deep_geothermal_energy">Tiefengeothermie</string>
+
+    <string name="menu_about">Über uns</string>
+    <string name="menu_lilo">LiLO</string>
+    <string name="menu_contact">Kontakt</string>
+    <string name="menu_preference">Einstellungen</string>
+
+    //! -- Description Content-->
+    <string name="description_lilo_logo">Logo LiLO</string>
+    <string name="description_action_button_floating">Floating Action Button</string>
+    <string name="description_image_mail">Logo Mail</string>
+    <string name="description_image_signal">Logo Signal</string>
+    <string name="description_image_telegram">Logo Telegram</string>
+    <string name="description_image_facebook">Logo Facebook</string>
+
+    //! -- WebView Fragments-->
+    <string name="webview_search">Suche…</string>
+    <string name="webview_loading">Lade</string>
+    <string name="webview_percent">%</string>
+    <string name="webview_error_no_webpage">Hopla… hier ist etwas schief gelaufen.</string>
+    <string name="webview_error_no_connection_to_server">Keine Verbindung!</string>
+
+    //! -- Events Recycler
+    <string name="event_header_title">Alle Veranstaltungen</string>
+    <string name="event_header_description">Eine Liste mit allen kommenden Veranstaltungen</string>
+    <string name="event_recycler_event_title">Event Titel</string>
+    <string name="event_recycler_event_weekday">Wochentag</string>
+    <string name="event_recycler_event_day">Tag</string>
+    <string name="event_recycler_event_start_time">time</string>
+    <string name="event_recycler_event_end_text"> - </string>
+    <string name="event_recycler_event_end_time">time</string>
+    <string name="event_recycler_event_clock">Uhr</string>
+
+    //! -- Share Action Button Floating-->
+    <string name="share_chooser_title">Share:</string>
+    <string name="share_subject">Linke Liste Ortenau</string>
+    <string name="share_message_show_here">Schau mal hier:</string>
+
+    //! -- Contact Text-->
+    <string name="contact_first_text">Unsere Treffen finden im R12 (Rammersweierstraße 12) statt. Du bist herzlich dazu eingeladen, bei uns vorbei zu schauen. Eine Anmeldung ist nicht nötig.</string>
+    <string name="contact_mail_contact">Schreibe uns eine E-Mail</string>
+    <string name="contact_signal_join">Signalgruppe beitreten</string>
+    <string name="contact_telegram_join">Telegramgruppe betreten</string>
+    <string name="contact_facebook_follow">Auf Facebook folgen</string>
+    <string name="contact_mail_address">info@linke-liste-ortenau.de</string>
+    <string name="contact_mail_subject">Kontakt vom Benutzer</string>
+    <string name="contact_mail_text">Hallo LiLO, </string>
+
+    //! -- Feedback Text-->
+    <string name="feedback_mail_address">info@linke-liste-ortenau.de</string>
+    <string name="feedback_mail_subject">Feedback vom App-Benutzer</string>
+    <string name="feedback_mail_phone">Smartphone</string>
+    <string name="developer_mail_address">Kontakt@ManuelZiel.com</string>
+
+    //! -- Notification-->
+    <string name="notification_event_title">Veranstaltungsbegin</string>
+    <string name="notification_event_show_content_action_bar_title">Veranstaltung</string>
+    <string name="notification_title_time">Uhr</string>
+    <string name="notification_article_new_title">NEUER LILO ARTIKEL!</string>
+
+    //! -- Dialog-->
+    <string name="dialog_action_yes">Ja</string>
+    <string name="dialog_action_no">Nein</string>
+    <string name="dialog_action_ok">OK</string>
+
+    <string name="dialog_reset_message">App zurücksetzen?</string>
+
+    <string name="dialog_license_title">LICENSE</string>
+    <string name="dialog_license_copyright_message">Copyright</string>
+    <string name="dialog_license_message">Lizenziert unter der Apache-Lizenz, Version 2.0 (die „Lizenz“);
+Sie dürfen diese Software nur in Übereinstimmung mit der Lizenz verwenden.
+Eine Kopie der Lizenz erhalten Sie unter</string>
+    <string name="dialog_license_link">http://www.apache.org/licenses/LICENSE-2.0</string>
+    <string name="dialog_license_message_last">Sofern nicht durch geltendes Recht vorgeschrieben oder schriftlich vereinbart, Software
+unter der Lizenz vertrieben wird auf einer "WIE BESEHEN"-BASIS vertrieben,
+OHNE GARANTIEN ODER BEDINGUNGEN JEGLICHER ART, weder ausdrücklich noch stillschweigend.
+Siehe die Lizenz für die spezifischen Sprachregelungsberechtigungen und
+Beschränkungen unter der Lizenz.</string>
+    <string name="dialog_third_party_license_title">Third-party License</string>
+
+</resources>

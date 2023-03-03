@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Primary brand color for LiLO. -->
+<resources>
+    <color name="lilo_red_200">#ffaaaa</color>
+    <color name="lilo_red_300">#ff8080</color>
+    <color name="lilo_red_500">#ff5555</color>
+    <color name="lilo_red_700">#ff0000</color>
+    <color name="lilo_red_900">#aa0000</color>
+
+    <color name="lilo_pink_200">#ffaacc</color>
+    <color name="lilo_pink_300">#ff5599</color>
+    <color name="lilo_pink_500">#ff2a7f</color>
+    <color name="lilo_pink_700">#d40055</color>
+    <color name="lilo_pink_900">#800033</color>
+
+    <color name="lilo_purple_200">#f2ccfe</color>
+    <color name="lilo_purple_300">#da66fe</color>
+    <color name="lilo_purple_500">#ce34fd</color>
+    <color name="lilo_purple_700">#9b01ca</color>
+    <color name="lilo_purple_900">#4d0065</color>
+
+    <color name="lilo_primary_200">#ffaaaa</color>
+    <color name="lilo_primary_300">#ff8080</color>
+    <color name="lilo_primary_500">#ff5555</color>
+    <color name="lilo_primary_700">#ff0000</color>
+    <color name="lilo_primary_900">#aa0000</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

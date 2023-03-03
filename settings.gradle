@@ -1,0 +1,3 @@
+rootProject.name='LinkeListeOrtenau'
+include ':app'
+

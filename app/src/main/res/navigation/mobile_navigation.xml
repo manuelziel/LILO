@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="de.linkelisteortenau.app.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="de.linkelisteortenau.app.ui.search.SearchFragment"
+        android:label="@string/menu_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/nav_event"
+        android:name="de.linkelisteortenau.app.ui.events.EventsFragment"
+        android:label="@string/menu_event"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_health_care"
+        android:name="de.linkelisteortenau.app.ui.program.HealthCareFragment"
+        android:label="@string/menu_health_care"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_local_transport"
+        android:name="de.linkelisteortenau.app.ui.program.LocalTransportFragment"
+        android:label="@string/menu_local_transport"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_housing"
+        android:name="de.linkelisteortenau.app.ui.program.HousingFragment"
+        android:label="@string/menu_housing"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_social"
+        android:name="de.linkelisteortenau.app.ui.program.SocialFragment"
+        android:label="@string/menu_social"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_training"
+        android:name="de.linkelisteortenau.app.ui.program.TrainingFragment"
+        android:label="@string/menu_training"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_deep_geothermal_energy"
+        android:name="de.linkelisteortenau.app.ui.program.DeepGeothermalEnergyFragment"
+        android:label="@string/menu_deep_geothermal_energy"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="de.linkelisteortenau.app.ui.about.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_contact"
+        android:name="de.linkelisteortenau.app.ui.contact.ContactFragment"
+        android:label="@string/menu_contact"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_setup"
+        android:name="de.linkelisteortenau.app.ui.preferences.PreferencesFragment"
+        android:label="@string/menu_preference"
+        tools:layout="@layout/fragment_preference" />
+
+    <fragment
+        android:id="@+id/nav_event_content"
+        android:name="de.linkelisteortenau.app.ui.events.EventContentFragment"
+        android:label="@string/menu_event"
+        tools:layout="@layout/fragment_web_view" />
+</navigation>

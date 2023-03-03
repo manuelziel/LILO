@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_home" />
+
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_menu_search"
+            android:title="@string/menu_search" />
+
+        <item
+            android:id="@+id/nav_event"
+            android:icon="@drawable/ic_menu_event"
+            android:title="@string/menu_event" />
+
+        <item
+            android:id="@+id/nav_program"
+            android:title="@string/menu_program"
+            android:visible="true">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_health_care"
+                        android:icon="@drawable/ic_menu_medical_services"
+                        android:title="@string/menu_health_care" />
+
+                    <item
+                        android:id="@+id/nav_local_transport"
+                        android:icon="@drawable/ic_menu_directions_bus"
+                        android:title="@string/menu_local_transport" />
+
+                    <item
+                        android:id="@+id/nav_housing"
+                        android:icon="@drawable/ic_menu_home"
+                        android:title="@string/menu_housing" />
+
+                    <item
+                        android:id="@+id/nav_social"
+                        android:icon="@drawable/ic_menu_diversity"
+                        android:title="@string/menu_social" />
+
+                    <item
+                        android:id="@+id/nav_training"
+                        android:icon="@drawable/ic_menu_school"
+                        android:title="@string/menu_training" />
+
+                    <item
+                        android:id="@+id/nav_deep_geothermal_energy"
+                        android:icon="@drawable/ic_menu_electric_bolt"
+                        android:title="@string/menu_deep_geothermal_energy" />
+                </group>
+            </menu>
+        </item>
+
+        <item
+            android:title="@string/menu_about"
+            android:visible="true">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_about"
+                        android:icon="@drawable/lilo_logo_bw_small"
+                        android:title="@string/menu_lilo" />
+
+                    <item
+                        android:id="@+id/nav_contact"
+                        android:icon="@drawable/ic_menu_alternate_email"
+                        android:title="@string/menu_contact" />
+
+                    <item
+                        android:id="@+id/nav_setup"
+                        android:icon="@drawable/ic_menu_settings"
+                        android:title="@string/menu_preference" />
+                </group>
+            </menu>
+        </item>
+    </group>
+</menu>
