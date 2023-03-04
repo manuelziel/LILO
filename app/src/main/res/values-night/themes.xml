@@ -45,4 +45,29 @@
     <style name="Theme.LiLO.AppBarOverlay" parent="ThemeOverlay.Material3.Dark.ActionBar" />
 
     <style name="Theme.LiLO.PopupOverlay" parent="ThemeOverlay.Material3.Light" />
+
+    <!-- Navigation View color. -->
+    <style name="Widget.App.NavigationView" parent="Widget.Material3.NavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.NavigationView</item>
+        <!-- <item name="itemIconTint">@color/navigation_item_color</item> -->
+
+        <!-- <item name="itemTextColor">@color/navigation_item_color</item> -->
+        <!-- <item name="itemShapeFillColor">@color/navigation_item_background_color</item> -->
+    </style>
+
+    <style name="ThemeOverlay.App.NavigationView" parent="">
+        <item name="colorSecondaryContainer">@color/lilo_primary_1000</item>
+        <item name="colorOnSecondaryContainer">@color/lilo_primary_200</item>
+
+        <!-- <item name="colorTertiaryContainer">@color/shrine_theme_dark_tertiaryContainer</item> -->
+        <!-- <item name="colorOnTertiaryContainer">@color/shrine_theme_dark_onTertiaryContainer</item> -->
+
+        <item name="colorSurface">@color/lilo_primary_1100</item>
+        <!-- <item name="colorOnSurface">@color/shrine_theme_dark_onSurface</item> -->
+        <!-- <item name="colorOnSurfaceVariant">@color/shrine_theme_dark_onSurfaceVariant</item> -->
+
+        <!-- <item name="colorOutline">@color/shrine_theme_dark_outline</item> -->
+        <!-- <item name="textAppearanceTitleSmall">@style/TextAppearance.App.TitleSmall</item> -->
+        <!-- <item name="textAppearanceLabelLarge">@style/TextAppearance.App.LabelLarge</item> -->
+    </style>
 </resources>
