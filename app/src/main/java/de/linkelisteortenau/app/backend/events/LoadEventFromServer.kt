@@ -14,6 +14,7 @@ import de.linkelisteortenau.app.WEB_VIEW_URL_EVENTS
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_LOAD_TEST_LINK
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_LOAD_TEST_TITLE
 import de.linkelisteortenau.app.backend.debug.DEBUG_LOAD_EVENT
+import de.linkelisteortenau.app.backend.notification.BackgroundNotification
 import de.linkelisteortenau.app.backend.preferences.Preferences
 import de.linkelisteortenau.app.backend.time.Time
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +30,9 @@ import java.io.IOException
 /**
  * Class to load Events from the Web Server
  **/
-class LoadEventFromServer(val context: Context) {
+class LoadEventFromServer(
+    val context: Context
+    ) {
     val debug = Preferences(context).getSystemDebug()
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
@@ -131,10 +134,13 @@ class LoadEventFromServer(val context: Context) {
 
                         Events(context).saveEvent(hashMap)
 
-                        if (cnt == eHref.size) {
-                            // TODO Not yet implemented
-                        }
+                        //if (cnt == eHref.size) {
+                            // Code here if end loop reached
+                        //}
                     }
+
+                    // Show new Notifications
+                    BackgroundNotification(context).newNotifications()
                 }
             }
         } catch (e: IOException) {
@@ -197,5 +203,8 @@ class LoadEventFromServer(val context: Context) {
         } catch (e: IOException) {
             Log.e(DEBUG_LOAD_EVENT, e.message.toString())
         }
+
+        // Show new Notifications
+        BackgroundNotification(context).newNotifications()
     }
 }

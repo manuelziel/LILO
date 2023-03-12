@@ -8,15 +8,12 @@ package de.linkelisteortenau.app.backend.events
  **/
 import android.content.Context
 import android.util.Log
-import de.linkelisteortenau.app.GLOBAL_NULL
-import de.linkelisteortenau.app.NOTIFICATION_NEXT_UPCOMING_EVENT_TIME
-import de.linkelisteortenau.app.R
+import de.linkelisteortenau.app.*
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_ALREADY_SAVED
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_CHECK_NOT_VALIDATED
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_IN_PASTE
 import de.linkelisteortenau.app.backend.preferences.Preferences
-import de.linkelisteortenau.app.backend.sql.articles.ArticleDeleteDB
 import de.linkelisteortenau.app.backend.sql.events.EventDeleteDB
 import de.linkelisteortenau.app.backend.sql.events.EventGetDB
 import de.linkelisteortenau.app.backend.sql.events.EventInsertDB
@@ -246,14 +243,14 @@ class Events(val context: Context) {
 
         // Std Variables for Event checker
         val multiplicator = Preferences(context).getUserEventsNotificationTimeMultiplicator()
-        val time: Long = NOTIFICATION_NEXT_UPCOMING_EVENT_TIME.toLong()
+        val range: Long = NOTIFICATION_EVENT_TIME_RANGE_MIN.toLong() * 60000 // Convert to millis
 
         for (i in 0 until array.size) {
             val hashMap = array[i]
 
             // Check Event for the given time-range to Push-Notification
             if (hashMap[EnumEvent.END].toString().toLong() >= Time(context).getUnixTime() &&
-                ((hashMap[EnumEvent.START].toString().toLong() - (time * multiplicator)) <= Time(context).getUnixTime())
+                ((hashMap[EnumEvent.START].toString().toLong() - (range * multiplicator)) <= Time(context).getUnixTime())
             ) {
                 val eventStartAsHashMap = Time(context).dateFormatToHumanTime(hashMap[EnumEvent.START].toString().toLong())
 

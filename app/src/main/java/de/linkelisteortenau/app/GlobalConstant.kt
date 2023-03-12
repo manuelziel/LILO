@@ -16,11 +16,11 @@ const val GLOBAL_NULL   = "NULL"
 const val HOST_URL_ORGANISATION = "www.linke-liste-ortenau.de"
 
 /**
- * Constants for global Time
+ * Constants for global Time.
  *
- *
+ * Minute has 60000 millis
  **/
-const val TIME_HOUR = 3600000
+//const val TIME_HOUR = 3600000
 const val TIME_MINUTE = 60000
 const val TIME_PATTER_GLOBAL = "yyyy-MM-dd'T'HH:mm:ssXXX"
 const val TIME_PATTER_YEAR = "yyyy"
@@ -39,19 +39,20 @@ const val PREF_SYSTEM_DEBUG                                 = "pref_system_debug
 const val PREF_SYSTEM_DEBUG_VALUE                           = "false"
 const val PREF_USER_PRIVACY_POLICY                          = "pref_user_privacy_policy"
 const val PREF_USER_PRIVACY_POLICY_VALUE                    = "false"
+const val PREF_APP_UPDATE                                   = "pref_app_update"
+const val PREF_APP_UPDATE_VALUE                             = "0"
 const val PREF_LOCALE                                       = "pref_locale"
 const val PREF_LOCALE_VALUE                                 = "DE"
 const val PREF_USER_SHOW_EVENT_NOTIFICATION                 = "pref_user_show_event_notification"
 const val PREF_USER_SHOW_EVENT_NOTIFICATION_VALUE           = "false"
 const val PREF_USER_EVENT_NOTIFICATION_TIME_MULTIPLICATOR   = "pref_user_notification_time_multiplicator"
-const val PREF_USER_EVENT_NOTIFICATION_TIME_MULTIPLICATOR_VALUE = "1"
+const val PREF_USER_EVENT_NOTIFICATION_TIME_MULTIPLICATOR_VALUE = "60"
 const val PREF_USER_SHOW_ARTICLE_NOTIFICATION               = "pref_user_show_article_notification"
 const val PREF_USER_SHOW_ARTICLE_NOTIFICATION_VALUE         = "false"
 
 /**
  * Constants for user key Preferences.
- * The Keys are only used in the Preference XML
- *
+ * The Keys are only used in the Preference XML.
  **/
 const val USER_PREF_KEY_RESET                   = "pref_key_user_reset"
 const val USER_PREF_KEY_APP_VERSION             = "pref_key_user_app_version"
@@ -66,21 +67,12 @@ const val USER_PREF_KEY_DEBUG                   = "pref_key_user_debug"
 
 /**
  * Constants for Push-Notification
- *
- * Hour (3600000) as millis, Min (60000)
  **/
-const val NOTIFICATION_NEXT_UPCOMING_EVENT_TIME = 3600000
-const val NOTIFICATION_CHECK_SERVER_EVENT_DELAY_MULTIPLICATOR = 12
-const val NOTIFICATION_CHECK_SERVER_EVENT_DELAY = 3600000
-const val NOTIFICATION_CHECK_SERVER_ARTICLE_DELAY_MULTIPLICATOR = 1
-const val NOTIFICATION_CHECK_SERVER_ARTICLE_DELAY = 3600000
-const val NOTIFICATION_CHECK_NOTIFICATION_DELAY_MULTIPLICATOR = 15
-const val NOTIFICATION_CHECK_NOTIFICATION_DELAY = 60000
+const val NOTIFICATION_EVENT_TIME_RANGE_MIN = 60
+const val NOTIFICATION_WORKER_LOOP_TIME_MIN = 30
 
 /**
  * Constants for Dialogs TAG
- *
- *
  **/
 const val DIALOG_TAG = "RESET"
 
@@ -112,8 +104,6 @@ const val WEB_VIEW_JAVASCRIPT_REMOVE_SEARCH = "javascript:(function() { var sear
 
 /**
  * Constants for Social Media connect
- *
- *
  **/
 const val SIGNAL_GROUP_URL = "https://signal.group/#CjQKINwyW59Pd6Ixd-KX9B3_Zon7cdms_pkv9JcVbzP9AdA1EhDuHcVJOJQCCutlhee5lDKN"
 const val TELEGRAM_GROUP_URL = "https://t.me/liloinfogrp"

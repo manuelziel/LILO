@@ -16,7 +16,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import de.linkelisteortenau.app.backend.BackgroundService
+import de.linkelisteortenau.app.backend.BackgroundBroadcastReceiver
+import de.linkelisteortenau.app.backend.defaults.Defaults
 import de.linkelisteortenau.app.backend.notification.EnumNotificationBundle
 import de.linkelisteortenau.app.backend.notification.EnumNotificationTyp
 import de.linkelisteortenau.app.backend.permission.PermissionNotification
@@ -55,13 +56,14 @@ class MainActivity : AppCompatActivity() {
         // Start background Service
         startBackgroundService()
 
-        // Intent to privacy policy activity if no Privacy Policy is set.
+        // Check Privacy Policy is set or Intent to privacy policy activity.
         userPrivacyPolicy()
+
+        // Set new default Preferences if app updated and new Preference are added.
+        appUpdated()
 
         // Request user for Notification permissions
         userPermissionNotification()
-
-        // TODO DynamicColors and fix ThemeStyles
 
         // Activity has started from Fragment with extras to load other Fragment with extras
         intent.extras?.let { intentFromPushNotification(it, navController) }
@@ -129,17 +131,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Start background Service
+     * Start background Worker
      **/
     private fun startBackgroundService() {
         if (Preferences(this).getUserPrivacyPolicy()) {
-            val intent = Intent(this, BackgroundService::class.java)
-
-            val pIntent = PendingIntent.getService(
-                this, 1, intent,
-                PendingIntent.FLAG_MUTABLE
-            )
-            pIntent.send()
+            BackgroundBroadcastReceiver().workRequest(this)
         }
     }
 
@@ -157,6 +153,15 @@ class MainActivity : AppCompatActivity() {
                 PendingIntent.FLAG_MUTABLE,
             )
             pIntent.send()
+        }
+    }
+
+    /**
+     * Check if the App is Updated. Then set the new default Preferences.
+     **/
+    private fun appUpdated() {
+        if ((Preferences(this).getAppCode() < BuildConfig.VERSION_CODE) && Preferences(this).getUserPrivacyPolicy()){
+            Defaults(this).setNewPreferences()
         }
     }
 

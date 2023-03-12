@@ -19,7 +19,8 @@ import de.linkelisteortenau.app.MainActivity
 import de.linkelisteortenau.app.R
 import de.linkelisteortenau.app.backend.articles.Articles
 import de.linkelisteortenau.app.backend.articles.EnumArticle
-import de.linkelisteortenau.app.backend.debug.DEBUG_BACKGROUND_SERVICE
+import de.linkelisteortenau.app.backend.connection.Connection
+import de.linkelisteortenau.app.backend.debug.DEBUG_BACKGROUND_WORKER
 import de.linkelisteortenau.app.backend.events.EnumEventNotification
 import de.linkelisteortenau.app.backend.events.Events
 import de.linkelisteortenau.app.backend.preferences.Preferences
@@ -30,8 +31,7 @@ import de.linkelisteortenau.app.backend.preferences.Preferences
  * @param string as String
  **/
 enum class EnumNotificationBundle(val string: String) {
-    TYP("content_typ"),
-    LINK("content_link"),
+    TYP("content_typ"), LINK("content_link"),
 }
 
 /**
@@ -40,8 +40,7 @@ enum class EnumNotificationBundle(val string: String) {
  * @param string as String
  **/
 enum class EnumNotificationTyp(val string: String) {
-    EVENT("typ_event"),
-    ARTICLE("typ_article")
+    EVENT("typ_event"), ARTICLE("typ_article")
 }
 
 /**
@@ -50,7 +49,9 @@ enum class EnumNotificationTyp(val string: String) {
  * @see <a href="https://developer.android.com/develop/ui/views/notifications/build-notification">Notifications</a>
  * @param context as Context
  **/
-class BackgroundNotification(val context: Context) {
+class BackgroundNotification(
+    val context: Context
+) {
     val debug = Preferences(context).getSystemDebug()
     private val channelId = "LiLO"
     private val channelName = "LiLO Push-Notification"
@@ -67,25 +68,38 @@ class BackgroundNotification(val context: Context) {
      * Check the Events and Articles are not empty and Push Notifications.
      **/
     fun newNotifications() {
+        // Create new Channel to show Notifications.
+        createNotificationChannel()
+
+        val connectionToServer = Connection(context).connectionToServer()
+        val userPrivacyPolicy = Preferences(context).getUserPrivacyPolicy()
         val userShowEventsNotification = Preferences(context).getUserShowEventsNotification()
         val userShowArticlesNotification = Preferences(context).getUserShowArticlesNotification()
-        val event = Events(context).getNotification()
-        val article = Articles(context).getNotification()
 
-        if (debug) {
-            Log.d(DEBUG_BACKGROUND_SERVICE, "Push-Notification Preference Events: \"$userShowEventsNotification\" Articles: \"$userShowArticlesNotification\"")
+        // Check for Server connection and privacy policy.
+        // Than create Push Notification.
+        if (connectionToServer && userPrivacyPolicy) {
+
+            val event = Events(context).getNotification()
+            val article = Articles(context).getNotification()
+
+            if (debug) {
+                Log.d(DEBUG_BACKGROUND_WORKER, "Push-Notification Preference Events: \"$userShowEventsNotification\" Articles: \"$userShowArticlesNotification\"")
+            }
+
+            // Create event Notification
+            if ((event[EnumEventNotification.FLAG].toBoolean()) && userShowEventsNotification) {
+                newEventNotification(event)
+            }
+
+            // Create article Notification
+            if ((article[EnumArticle.FLAG].toBoolean()) && userShowArticlesNotification) {
+                newArticleNotification(article)
+            }
+
+            // finally notifying the notification
+            notificationManager(event, article, userShowEventsNotification, userShowArticlesNotification)
         }
-
-        if ((event[EnumEventNotification.FLAG].toBoolean()) && userShowEventsNotification) {
-            newEventNotification(event)
-        }
-
-        if ((article[EnumArticle.FLAG].toBoolean()) && userShowArticlesNotification) {
-            newArticleNotification(article)
-        }
-
-        // finally notifying the notification
-        notificationManager(event, article, userShowEventsNotification, userShowArticlesNotification)
     }
 
     /**
@@ -93,8 +107,7 @@ class BackgroundNotification(val context: Context) {
      * This Group shows all Content as Summary.
      **/
     private fun summary(): Notification {
-        return NotificationCompat.Builder(context, channelId)
-            .setContentTitle("Summary")
+        return NotificationCompat.Builder(context, channelId).setContentTitle("Summary")
             // Set content text to support devices running API level < 24.
             //.setContentText("Two new messages")
             .setSmallIcon(R.drawable.lilo_notification)
@@ -109,8 +122,7 @@ class BackgroundNotification(val context: Context) {
             // Specify which group this notification belongs to.
             .setGroup(channelGroupKeySummary)
             // Set this notification as the summary for the group.
-            .setGroupSummary(true)
-            .build()
+            .setGroupSummary(true).build()
     }
 
     /**
@@ -137,10 +149,7 @@ class BackgroundNotification(val context: Context) {
         // Making pendingIntent to open the Organisation Notification Content
         // page after clicking the Notification
         val pendingContentIntent = PendingIntent.getActivity(
-            context,
-            5,
-            contentIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            context, 5, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         // Making pendingIntent2 to open the Organisation about
@@ -170,8 +179,7 @@ class BackgroundNotification(val context: Context) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
             // making the notification clickable
-            .setContentIntent(pendingContentIntent)
-            .setAutoCancel(true)
+            .setContentIntent(pendingContentIntent).setAutoCancel(true)
 
             // only one Alert
             .setOnlyAlertOnce(true)
@@ -222,10 +230,7 @@ class BackgroundNotification(val context: Context) {
         // Making pendingIntent to open the Organisation Notification Content
         // page after clicking the Notification
         val pendingContentIntent = PendingIntent.getActivity(
-            context,
-            5,
-            contentIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            context, 5, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         // Making pendingIntent2 to open the Organisation about
@@ -253,8 +258,7 @@ class BackgroundNotification(val context: Context) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
             // making the notification clickable
-            .setContentIntent(pendingContentIntent)
-            .setAutoCancel(true)
+            .setContentIntent(pendingContentIntent).setAutoCancel(true)
 
             // only one Alert
             .setOnlyAlertOnce(true)
@@ -284,13 +288,11 @@ class BackgroundNotification(val context: Context) {
     /**
      * Creating the notification Channel
      **/
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         // creating notification channel and setting
         // the description of the channel
         val channel = NotificationChannel(
-            channelId,
-            channelName,
-            NotificationManager.IMPORTANCE_DEFAULT
+            channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             description = channelDescription
         }
@@ -305,10 +307,7 @@ class BackgroundNotification(val context: Context) {
      * Push all Notifications in a Group
      */
     private fun notificationManager(
-        event: HashMap<EnumEventNotification, String>,
-        article: HashMap<EnumArticle, String>,
-        userShowEventsNotification: Boolean,
-        userShowArticlesNotification: Boolean
+        event: HashMap<EnumEventNotification, String>, article: HashMap<EnumArticle, String>, userShowEventsNotification: Boolean, userShowArticlesNotification: Boolean
     ) {
         //val summary = 0
 
@@ -332,8 +331,7 @@ class BackgroundNotification(val context: Context) {
      * @param link to open in the event content Fragment
      **/
     private fun organisationOpenerIntent(
-        typ: String,
-        link: String
+        typ: String, link: String
     ): Intent {
         val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

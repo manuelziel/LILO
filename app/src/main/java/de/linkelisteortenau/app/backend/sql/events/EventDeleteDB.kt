@@ -9,7 +9,6 @@ package de.linkelisteortenau.app.backend.sql.events
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import de.linkelisteortenau.app.backend.BackgroundService
 import de.linkelisteortenau.app.backend.preferences.Preferences
 import de.linkelisteortenau.app.backend.debug.*
 import de.linkelisteortenau.app.backend.sql.COLUMN_EVENT_END

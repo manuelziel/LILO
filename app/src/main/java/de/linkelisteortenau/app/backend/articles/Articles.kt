@@ -26,7 +26,7 @@ enum class EnumArticle { TITLE, CONTENT, LINK, FLAG }
  *
  * @param context as Context
  **/
-class Articles (val context: Context){
+class Articles(val context: Context) {
     val debug = Preferences(context).getSystemDebug()
 
     /**
@@ -182,10 +182,11 @@ class Articles (val context: Context){
      **/
     fun getNotification(): HashMap<EnumArticle, String> {
         val returnHashMap: HashMap<EnumArticle, String> = HashMap<EnumArticle, String>()
-        val array: ArrayList<HashMap<EnumArticle, String>> = getFlaggedArticles(true)
+        val arrayTrue: ArrayList<HashMap<EnumArticle, String>> = getFlaggedArticles(true)
+        val arrayFalse: ArrayList<HashMap<EnumArticle, String>> = getFlaggedArticles(false)
 
-        for (i in 0 until array.size) {
-            val hashMap = array[i]
+        for (i in 0 until arrayTrue.size) {
+            val hashMap = arrayTrue[i]
 
             if (hashMap[EnumArticle.FLAG].toBoolean()) {
                 returnHashMap[EnumArticle.TITLE] = hashMap[EnumArticle.TITLE].toString()
@@ -194,7 +195,9 @@ class Articles (val context: Context){
                 returnHashMap[EnumArticle.FLAG] = hashMap[EnumArticle.FLAG].toString()
 
                 // Delete all old Articles with the Flag false after that set the new Articles to the Flag false
-                deleteFlaggedArticles(false)
+                if (arrayFalse.isNotEmpty()) {
+                    deleteFlaggedArticles(false)
+                }
                 setAllArticlesFlags(false)
                 break
             }
@@ -214,7 +217,7 @@ class Articles (val context: Context){
      * Delete the hole Article SQL-Database
      */
     fun deleteDatabase(
-    ){
+    ) {
         ArticleDeleteDB(context).deleteSQL()
     }
 }

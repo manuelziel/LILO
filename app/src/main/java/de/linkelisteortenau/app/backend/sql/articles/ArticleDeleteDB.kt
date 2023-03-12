@@ -9,7 +9,6 @@ package de.linkelisteortenau.app.backend.sql.articles
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import de.linkelisteortenau.app.backend.BackgroundService
 import de.linkelisteortenau.app.backend.preferences.Preferences
 import de.linkelisteortenau.app.backend.debug.*
 
@@ -34,8 +33,8 @@ class ArticleDeleteDB(val context: Context) {
         // Define 'where' part of query.
         val whereClause = buildString {
             append(COLUMN_ARTICLE_FLAG)
-            append(" == ")
-            append(flag)
+            append(" = ")
+            append("'$flag'")
         }
 
         // Issue SQL Statement.

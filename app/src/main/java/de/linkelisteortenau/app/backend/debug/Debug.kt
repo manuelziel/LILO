@@ -10,23 +10,20 @@ package de.linkelisteortenau.app.backend.debug
 /**
  * Constants for the Debug
  **/
-const val DEBUG = "DEBUG"
-const val DEBUG_INTENT_SERVICE = "Intent Service"
-const val DEBUG_ON_CREATE = " -> onCreate"
-const val DEBUG_ON_START_COMMAND = " -> onStartCommand"
-const val DEBUG_START_SERVICE = " -> startService"
-const val DEBUG_FOREGROUND_SERVICE = " -> startForegroundService"
-const val DEBUG_BIND = " -> onBind"
-const val DEBUG_UNBIND = " -> unBind"
-const val DEBUG_REBIND = " -> reBind"
-const val DEBUG_DESTROY = " -> destroy"
+//const val DEBUG = "DEBUG"
+const val DEBUG_INTENT_WORKER = "Intent Worker"
 
-/** BACKGROUND Service **/
+/** Set Defaults **/
+const val DEBUG_SET_DEFAULTS = "LiLO_set_Defaults"
+const val DEBUG_SET_DEFAULTS_DEFAULTS = "First Defaults are set"
+const val DEBUG_SET_DEFAULTS_NEW_DEFAULTS = "New Defaults are set"
+
+/** BACKGROUND Worker **/
 const val DEBUG_BACKGROUND_BROADCAST_RECEIVER = "LiLO_Backend_Broadcast_Receiver"
-const val DEBUG_BACKGROUND_SERVICE = "LiLO_Backend_Service"
+const val DEBUG_BACKGROUND_WORKER = "LiLO_Backend_Worker"
 const val DEBUG_BACKGROUND_LOOP_ARTICLES = " -> run Articles"
 const val DEBUG_BACKGROUND_LOOP_EVENTS = " -> run Events"
-const val DEBUG_BACKGROUND_LOOP_NOTIFICATION = " -> run Notification"
+//const val DEBUG_BACKGROUND_LOOP_NOTIFICATION = " -> run Notification"
 
 /** Permission Notification **/
 const val DEBUG_PERMISSION_NOTIFICATION             = "LiLO_Permission_Notification"
@@ -41,7 +38,7 @@ const val DEBUG_EVENT_LOAD_TEST_LINK                = "https://www.linke-liste-o
 const val DEBUG_TIME                                = "LiLO_Time"
 
 /** WebView **/
-const val DEBUG_WEB_VIEW_ERROR                      = "LiLO_WebView"
+//const val DEBUG_WEB_VIEW_ERROR                      = "LiLO_WebView"
 
 /** Event **/
 const val DEBUG_EVENT                               = "LiLO_Event"

@@ -62,6 +62,7 @@ class HomeFragment : Fragment() {
         if (arg == true) {
             link = requireArguments().getString(EnumNotificationBundle.LINK.string).toString()
             parentLink = (WEB_VIEW_HTTP_SCHEM + HOST_URL_ORGANISATION)
+            arguments?.clear()
         } else {
             link = (WEB_VIEW_HTTP_SCHEM + HOST_URL_ORGANISATION)
             parentLink = (WEB_VIEW_HTTP_SCHEM + HOST_URL_ORGANISATION)

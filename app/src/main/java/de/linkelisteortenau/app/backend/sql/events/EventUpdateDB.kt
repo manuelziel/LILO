@@ -10,7 +10,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import de.linkelisteortenau.app.backend.BackgroundService
 import de.linkelisteortenau.app.backend.preferences.Preferences
 import de.linkelisteortenau.app.backend.debug.*
 import de.linkelisteortenau.app.backend.events.EnumEvent

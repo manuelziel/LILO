@@ -12,6 +12,7 @@ import de.linkelisteortenau.app.GLOBAL_NULL
 import de.linkelisteortenau.app.HOST_URL_ORGANISATION
 import de.linkelisteortenau.app.WEB_VIEW_HTTP_SCHEM
 import de.linkelisteortenau.app.backend.debug.DEBUG_LOAD_ARTICLE
+import de.linkelisteortenau.app.backend.notification.BackgroundNotification
 import de.linkelisteortenau.app.backend.preferences.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,6 +87,9 @@ class LoadArticlesFromServer (val context: Context){
 
                     Articles(context).saveArticles(hashMap)
                 }
+
+                // Show new Notifications
+                BackgroundNotification(context).newNotifications()
             }
         } catch (e: IOException) {
             Log.e(DEBUG_LOAD_ARTICLE, e.message.toString())

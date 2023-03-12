@@ -56,6 +56,25 @@ class Preferences(val context: Context) {
     }
 
     /**
+     * Set App Code Preference.
+     * To check it if an Update are exist.
+     *
+     * @param code is the Value of the App Version
+     **/
+    fun setAppCode(code: Int) {
+        prefManager.edit().putString(PREF_APP_UPDATE, code.toString()).apply()
+    }
+
+    /**
+     * Get the last App Code to check if an Update exist.
+     *
+     * @return Integer
+     **/
+    fun getAppCode(): Int {
+        return prefManager.getString(PREF_APP_UPDATE, PREF_APP_UPDATE_VALUE).toString().toInt()
+    }
+
+    /**
      * Set the user locale to use the APP
      *
      * @param locale is the Parameter of the user acceptation

@@ -23,6 +23,7 @@ import android.provider.BaseColumns
 const val ARTICLES_TABLE_NAME = "articles_table_lilo"
 const val ARTICLE_ID = BaseColumns._ID
 
+                                                  const val article_id: Int = 0
 const val COLUMN_ARTICLE_TITLE = "title";         const val article_title_index: Int = 1
 const val COLUMN_ARTICLE_LINK = "link";           const val article_link_index: Int = 2
 const val COLUMN_ARTICLE_CONTENT = "content";     const val article_content_index: Int = 3
