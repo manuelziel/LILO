@@ -9,6 +9,7 @@ package de.linkelisteortenau.app.ui.events.list_view
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import de.linkelisteortenau.app.backend.events.DataEvents
 import de.linkelisteortenau.app.backend.time.EnumTime
 import kotlin.random.Random
 

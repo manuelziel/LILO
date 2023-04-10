@@ -11,8 +11,10 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import de.linkelisteortenau.app.backend.articles.EnumArticle
-import de.linkelisteortenau.app.backend.debug.*
-import de.linkelisteortenau.app.backend.events.EnumEvent
+import de.linkelisteortenau.app.backend.debug.DEBUG_SQL_ARTICLE_GET
+import de.linkelisteortenau.app.backend.debug.DEBUG_SQL_ARTICLE_GET_DB
+import de.linkelisteortenau.app.backend.debug.DEBUG_SQL_ARTICLE_GET_EMPTY
+import de.linkelisteortenau.app.backend.debug.DEBUG_SQL_ARTICLE_GET_FLAGGED_DB
 import de.linkelisteortenau.app.backend.preferences.Preferences
 
 /**
@@ -20,10 +22,12 @@ import de.linkelisteortenau.app.backend.preferences.Preferences
  *
  * @param context as Context
  **/
-class ArticleGetDB(val context: Context) {
+class ArticleGetDB(
+    val context: Context
+) {
     private val debug = Preferences(context).getSystemDebug()
     private val dbHelper = ArticleDBHelper(context)
-    private val db: SQLiteDatabase = dbHelper.readableDatabase
+    private val db: SQLiteDatabase = dbHelper.writableDatabase
 
     /**
      * Read Article with content from the SQL-Database as ascending order from Article start.
@@ -46,20 +50,18 @@ class ArticleGetDB(val context: Context) {
 
         while (cursor.moveToNext()) {
             val hashMap: HashMap<EnumArticle, String> = HashMap<EnumArticle, String>()
-            hashMap[EnumArticle.TITLE]     = cursor.getString(article_title_index)
-            hashMap[EnumArticle.LINK]      = cursor.getString(article_link_index)
-            hashMap[EnumArticle.CONTENT]   = cursor.getString(article_content_index)
-            hashMap[EnumArticle.FLAG]      = cursor.getString(article_flag_index)
+            hashMap[EnumArticle.TITLE] = cursor.getString(article_title_index)
+            hashMap[EnumArticle.LINK] = cursor.getString(article_link_index)
+            hashMap[EnumArticle.CONTENT] = cursor.getString(article_content_index)
+            hashMap[EnumArticle.FLAG] = cursor.getString(article_flag_index)
 
             array.add(hashMap)
 
             if (debug) {
-                Log.d(DEBUG_SQL_ARTICLE_GET, DEBUG_SQL_ARTICLE_GET_DB+"\"$hashMap\"")
+                Log.d(DEBUG_SQL_ARTICLE_GET, DEBUG_SQL_ARTICLE_GET_DB + "\"$hashMap\"")
             }
         }
-
         cursor.close()
-        db.close()
 
         if (debug) {
             Log.d(DEBUG_SQL_ARTICLE_GET, "\n\n")
@@ -89,7 +91,7 @@ class ArticleGetDB(val context: Context) {
         val cursor = db.rawQuery(query, arrayOf(flag.toString()))
 
         val result = cursor.count > 0
-        if (result && debug){
+        if (result && debug) {
             Log.d(DEBUG_SQL_ARTICLE_GET, "Query count: \"${cursor.count}\" with Flags \"${flag}\"")
         } else {
             //Log.e(DEBUG_SQL_ARTICLE_GET, "Query not found")
@@ -97,20 +99,18 @@ class ArticleGetDB(val context: Context) {
 
         while (cursor.moveToNext()) {
             val hashMap: HashMap<EnumArticle, String> = HashMap<EnumArticle, String>()
-            hashMap[EnumArticle.TITLE]     = cursor.getString(article_title_index)
-            hashMap[EnumArticle.LINK]      = cursor.getString(article_link_index)
-            hashMap[EnumArticle.CONTENT]   = cursor.getString(article_content_index)
-            hashMap[EnumArticle.FLAG]      = cursor.getString(article_flag_index)
+            hashMap[EnumArticle.TITLE] = cursor.getString(article_title_index)
+            hashMap[EnumArticle.LINK] = cursor.getString(article_link_index)
+            hashMap[EnumArticle.CONTENT] = cursor.getString(article_content_index)
+            hashMap[EnumArticle.FLAG] = cursor.getString(article_flag_index)
 
             array.add(hashMap)
 
             if (debug) {
-                Log.d(DEBUG_SQL_ARTICLE_GET, DEBUG_SQL_ARTICLE_GET_FLAGGED_DB+"\"$hashMap\"")
+                Log.d(DEBUG_SQL_ARTICLE_GET, DEBUG_SQL_ARTICLE_GET_FLAGGED_DB + "\"$hashMap\"")
             }
         }
-
         cursor.close()
-        db.close()
 
         return array
     }
@@ -123,26 +123,24 @@ class ArticleGetDB(val context: Context) {
      **/
     fun queryData(
         article: HashMap<EnumArticle, String>
-    ): Boolean{
+    ): Boolean {
         val query = buildString {
-        append("SELECT * FROM ")
-        append(ARTICLES_TABLE_NAME)
-        append(" WHERE ")
-        append(COLUMN_ARTICLE_TITLE)
-        append(" = ? AND ")
-        append(COLUMN_ARTICLE_LINK)
-        append(" = ?")
+            append("SELECT * FROM ")
+            append(ARTICLES_TABLE_NAME)
+            append(" WHERE ")
+            append(COLUMN_ARTICLE_TITLE)
+            append(" = ? AND ")
+            append(COLUMN_ARTICLE_LINK)
+            append(" = ?")
         }
 
         val cursor = db.rawQuery(query, arrayOf(article[EnumArticle.TITLE], article[EnumArticle.LINK]))
 
         val result = cursor.count > 0
-        if (result && debug){
+        if (result && debug) {
             Log.d(DEBUG_SQL_ARTICLE_GET, "Query count: \"${cursor.count}\" by \"${article[EnumArticle.TITLE]}\"")
         }
-
         cursor.close()
-        db.close()
 
         return result
     }

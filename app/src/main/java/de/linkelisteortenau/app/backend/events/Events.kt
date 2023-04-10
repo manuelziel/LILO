@@ -11,7 +11,6 @@ import android.util.Log
 import de.linkelisteortenau.app.*
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_ALREADY_SAVED
-import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_CHECK_NOT_VALIDATED
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_IN_PASTE
 import de.linkelisteortenau.app.backend.preferences.Preferences
 import de.linkelisteortenau.app.backend.sql.events.EventDeleteDB
@@ -20,7 +19,6 @@ import de.linkelisteortenau.app.backend.sql.events.EventInsertDB
 import de.linkelisteortenau.app.backend.sql.events.EventUpdateDB
 import de.linkelisteortenau.app.backend.time.EnumTime
 import de.linkelisteortenau.app.backend.time.Time
-import de.linkelisteortenau.app.ui.events.list_view.DataEvents
 import kotlin.random.Random
 
 /**
@@ -34,19 +32,40 @@ enum class EnumEvent { TITLE, CONTENT, START, END, LINK, FLAG, PATTER }
 enum class EnumEventNotification { TITLE, CONTENT, YEAR, MONTH, DAY, WEEKDAY, HOUR, MINUTE, LINK, FLAG }
 
 /**
+ * Data Class Event
+ */
+data class Event(
+    val title: String,
+    val content: String,
+    val start: String,
+    val end: String,
+    val link: String,
+    val flag: String
+)
+
+/**
  * Class for the Events to load, save, check and delete.
  *
  * @param context as Context
  **/
-class Events(val context: Context) {
-    val debug = Preferences(context).getSystemDebug()
+class Events(
+    val context: Context
+    ) {
+    private val debug = Preferences(context).getSystemDebug()
+    private val time = Time(context)
+    private val preferences = Preferences(context)
+    private val eventGetDB = EventGetDB(context)
+    private val eventInsertDB = EventInsertDB(context)
+    private val eventUpdateDB = EventUpdateDB(context)
+    private val eventDeleteDB = EventDeleteDB(context)
+    private val loadEventFromServer = LoadEventFromServer(context)
 
     /**
      * Check all Events delete Duplicates and
      * delete all Events when it end is older as current time.
      **/
     fun check() {
-        val currentTime: Long = Time(context).getUnixTime()
+        val currentTime: Long = time.getUnixTime()
 
         // Delete if the Event is to old
         deleteEvents(currentTime)
@@ -77,8 +96,8 @@ class Events(val context: Context) {
     fun saveEvent(
         event: HashMap<EnumEvent, String>
     ) {
-        val eventStartAsLong = Time(context).dateFormatToUnix(event[EnumEvent.PATTER].toString(), event[EnumEvent.START].toString())
-        val eventEndAsLong = Time(context).dateFormatToUnix(event[EnumEvent.PATTER].toString(), event[EnumEvent.END].toString())
+        val eventStartAsLong = time.dateFormatToUnix(event[EnumEvent.PATTER].toString(), event[EnumEvent.START].toString())
+        val eventEndAsLong = time.dateFormatToUnix(event[EnumEvent.PATTER].toString(), event[EnumEvent.END].toString()) ?: return
         val hashMap: HashMap<EnumEvent, String> = HashMap<EnumEvent, String>()
 
         hashMap[EnumEvent.TITLE] = event[EnumEvent.TITLE].toString()
@@ -88,28 +107,22 @@ class Events(val context: Context) {
         hashMap[EnumEvent.LINK] = event[EnumEvent.LINK].toString()
         hashMap[EnumEvent.FLAG] = event[EnumEvent.FLAG].toString()
 
-        // Query Events
-        val queryEvent = EventGetDB(context).queryData(hashMap)
-
         // Check the SQL and event end
-        if (eventEndAsLong != null) {
-            // Save if not exist in DB and Event end is in the future
-            if ((!queryEvent) && (eventEndAsLong > Time(context).getUnixTime())) {
-                setEvent(hashMap)
-            }
+        if ((!eventGetDB.queryData(hashMap)) && (eventEndAsLong > time.getUnixTime())) {
+            setEvent(hashMap)
+        }
 
-            // Set Event Flag to true if this is already in the DB and the Event end is in the future
-            else if ((queryEvent) && (eventEndAsLong > Time(context).getUnixTime())) {
-                if (eventStartAsLong != null) {
-                    if (debug) {
-                        Log.d(DEBUG_EVENT, "$DEBUG_EVENT_ALREADY_SAVED\"${event[EnumEvent.TITLE]}\"")
-                    }
-                    setEventFlag(hashMap)
+        // Set Event Flag to true if this is already in the DB and the Event end is in the future
+        else if ((eventGetDB.queryData(hashMap)) && (eventEndAsLong > time.getUnixTime())) {
+            if (eventStartAsLong != null) {
+                if (debug) {
+                    Log.d(DEBUG_EVENT, "$DEBUG_EVENT_ALREADY_SAVED\"${event[EnumEvent.TITLE]}\"")
                 }
-
-            } else if (debug) {
-                Log.d(DEBUG_EVENT, "$DEBUG_EVENT_IN_PASTE: \"${event[EnumEvent.TITLE]}\" \n \n")
+                setEventFlag(hashMap)
             }
+
+        } else if (debug) {
+            Log.d(DEBUG_EVENT, "$DEBUG_EVENT_IN_PASTE: \"${event[EnumEvent.TITLE]}\" \n \n")
         }
     }
 
@@ -121,7 +134,7 @@ class Events(val context: Context) {
     private fun setEvent(
         event: HashMap<EnumEvent, String>
     ) {
-        EventInsertDB(context).insertEvent(event)
+        eventInsertDB.insertEvent(event)
     }
 
     /**
@@ -132,8 +145,8 @@ class Events(val context: Context) {
     fun setAllEventFlags(
         event: HashMap<EnumEvent, String>
     ) {
-        if (!event[EnumEvent.FLAG].toBoolean()) {
-            EventUpdateDB(context).setAllEventFlags(event)
+        if (event[EnumEvent.FLAG].toBoolean().not()) {
+            eventUpdateDB.setAllEventFlags(event)
         }
 
         // Debug
@@ -157,7 +170,7 @@ class Events(val context: Context) {
     private fun setEventFlag(
         event: HashMap<EnumEvent, String>,
     ) {
-        EventUpdateDB(context).setEventFlag(event)
+        eventUpdateDB.setEventFlag(event)
     }
 
     /**
@@ -166,7 +179,7 @@ class Events(val context: Context) {
      * @return ArrayList as HashMap, EnumEvent as String
      **/
     private fun getEvents(): ArrayList<HashMap<EnumEvent, String>> {
-        return EventGetDB(context).readData()
+        return eventGetDB.readData()
     }
 
     /**
@@ -175,45 +188,29 @@ class Events(val context: Context) {
      * @return List as DataEvents
      **/
     fun getEventsAsDataList(): List<DataEvents> {
-        val array: ArrayList<HashMap<EnumEvent, String>> = getEvents()
-        val list = mutableListOf<DataEvents>()
-
-        for (i in 0 until array.size) {
-            val hashMap = array[i]
-
-            // Check Event to DataSource-List
-            if (hashMap[EnumEvent.TITLE].toString().isEmpty() || hashMap[EnumEvent.START].toString().isBlank()) {
-                if (debug) {
-                    Log.e(DEBUG_EVENT, "$DEBUG_EVENT_CHECK_NOT_VALIDATED \n\n")
-                }
-            } else {
-
-                val eventStartAsHashMap = Time(context).dateFormatToHumanTime(hashMap[EnumEvent.START].toString().toLong())
-                val eventEndAsHashMap = Time(context).dateFormatToHumanTime(hashMap[EnumEvent.END].toString().toLong())
-                val eventWeekday = Time(context).dateFormatToHumanTime(hashMap[EnumEvent.START].toString().toLong())
-                val eventDate = "${eventStartAsHashMap[EnumTime.DAY]}.${eventStartAsHashMap[EnumTime.MONTH]}"
-                val eventStart = "${eventStartAsHashMap[EnumTime.HOUR]}:${eventStartAsHashMap[EnumTime.MINUTE]}"
-
-                val clock = context.getString(R.string.event_recycler_event_clock)
-                val eventEnd = "${eventEndAsHashMap[EnumTime.HOUR]}:${eventEndAsHashMap[EnumTime.MINUTE]} $clock"
-
-                val newEvent = DataEvents(
+        val events = getEvents()
+            .filter { it[EnumEvent.TITLE]?.isNotBlank() == true && it[EnumEvent.START]?.isNotBlank() == true }
+            .mapNotNull { event ->
+                val startAsHashMap = time.dateFormatToHumanTime(event[EnumEvent.START]?.toLongOrNull() ?: return@mapNotNull null)
+                val endAsHashMap = time.dateFormatToHumanTime(event[EnumEvent.END]?.toLongOrNull() ?: return@mapNotNull null)
+                val weekday = time.dateFormatToHumanTime(event[EnumEvent.START]?.toLongOrNull() ?: return@mapNotNull null)
+                val date = "${startAsHashMap[EnumTime.DAY]}.${startAsHashMap[EnumTime.MONTH]}"
+                val start = "${startAsHashMap[EnumTime.HOUR]}:${startAsHashMap[EnumTime.MINUTE]}"
+                val end = "${endAsHashMap[EnumTime.HOUR]}:${endAsHashMap[EnumTime.MINUTE]} ${context.getString(R.string.event_recycler_event_clock)}"
+                DataEvents(
                     Random.nextLong(),
-                    hashMap[EnumEvent.TITLE].toString(),
-                    eventWeekday[EnumTime.WEEKDAY].toString(),
-                    eventDate,
-                    eventStart,
-                    eventEnd,
-                    hashMap[EnumEvent.LINK].toString()
+                    event[EnumEvent.TITLE]!!,
+                    weekday[EnumTime.WEEKDAY]!!,
+                    date,
+                    start,
+                    end,
+                    event[EnumEvent.LINK] ?: ""
                 )
-                list.add(newEvent)
             }
-        }
-
         if (debug) {
-            Log.d(DEBUG_EVENT, "Events DataAsList: \"$list\" \n\n")
+            Log.d(DEBUG_EVENT, "Events DataAsList: \"$events\" \n\n")
         }
-        return list
+        return events
     }
 
     /**
@@ -224,14 +221,14 @@ class Events(val context: Context) {
     private fun deleteEvents(
         time: Long
     ) {
-        EventDeleteDB(context).deleteEvent(time.toString())
+        eventDeleteDB.deleteEvent(time.toString())
     }
 
     /**
      * Delete duplicates in SQL-Database.
      **/
     private fun deleteDuplicates() {
-        EventDeleteDB(context).deleteDuplicatesInSQL()
+        eventDeleteDB.deleteDuplicatesInSQL()
     }
 
     /**
@@ -239,23 +236,23 @@ class Events(val context: Context) {
      **/
     fun getNotification(): HashMap<EnumEventNotification, String> {
         val notificationHashMap: HashMap<EnumEventNotification, String> = HashMap<EnumEventNotification, String>()
-        val array: ArrayList<HashMap<EnumEvent, String>> = getEvents()
+        val array = getEvents()
 
         // Std Variables for Event checker
-        val multiplicator = Preferences(context).getUserEventsNotificationTimeMultiplicator()
+        val multiplicator = preferences.getUserEventsNotificationTimeMultiplicator()
         val range: Long = NOTIFICATION_EVENT_TIME_RANGE_MIN.toLong() * 60000 // Convert to millis
+        val currentTime = time.getUnixTime()
 
         for (i in 0 until array.size) {
             val hashMap = array[i]
 
             // Check Event for the given time-range to Push-Notification
-            if (hashMap[EnumEvent.END].toString().toLong() >= Time(context).getUnixTime() &&
-                ((hashMap[EnumEvent.START].toString().toLong() - (range * multiplicator)) <= Time(context).getUnixTime())
+            if ((hashMap[EnumEvent.END]?.toLongOrNull() ?: 0) >= currentTime &&
+                (((hashMap[EnumEvent.START]?.toLongOrNull() ?: 0) - (range * multiplicator)) <= currentTime)
             ) {
-                val eventStartAsHashMap = Time(context).dateFormatToHumanTime(hashMap[EnumEvent.START].toString().toLong())
+                val eventStartAsHashMap = time.dateFormatToHumanTime(hashMap[EnumEvent.START]?.toLongOrNull() ?: 0)
 
                 notificationHashMap[EnumEventNotification.TITLE] = hashMap[EnumEvent.TITLE].toString()
-
                 notificationHashMap[EnumEventNotification.CONTENT] = GLOBAL_NULL
                 notificationHashMap[EnumEventNotification.YEAR] = eventStartAsHashMap[EnumTime.YEAR].toString()
                 notificationHashMap[EnumEventNotification.MONTH] = eventStartAsHashMap[EnumTime.MONTH].toString()
@@ -269,7 +266,7 @@ class Events(val context: Context) {
                 if (debug) {
                     Log.d(
                         DEBUG_EVENT,
-                        "Next Event is: \"${hashMap[EnumEvent.TITLE].toString()}\" Current Unix Time: \"${Time(context).getUnixTime()}\" Next Events end time: \"${hashMap[EnumEvent.END].toString()}\" \n \n"
+                        "Next Event is: \"${hashMap[EnumEvent.TITLE].toString()}\" Current Unix Time: \"${time.getUnixTime()}\" Next Events end time: \"${hashMap[EnumEvent.END].toString()}\" \n \n"
                     )
                 }
             }
@@ -284,13 +281,13 @@ class Events(val context: Context) {
      * @see <a href="https://www.linke-liste-ortenau.de/feed/eo-events/">Events Calendar</a>
      **/
     fun loadEventsFromServer() {
-        LoadEventFromServer(context).loadEvents()
+        loadEventFromServer.loadEvents()
     }
 
     /**
      * Delete the hole Event SQL-Database
      */
     fun deleteDatabase(){
-        EventDeleteDB(context).deleteSQL()
+        eventDeleteDB.deleteSQL()
     }
 }

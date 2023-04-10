@@ -64,41 +64,42 @@ class BackgroundNotification(
     private lateinit var newArticleNotification: Notification
 
     /**
-     * Function to load new Events and Articles.
-     * Check the Events and Articles are not empty and Push Notifications.
+     * Loads new events and articles and creates push notifications if the user has enabled them.
      **/
     fun newNotifications() {
-        // Create new Channel to show Notifications.
+        // Create a notification channel.
         createNotificationChannel()
 
-        val connectionToServer = Connection(context).connectionToServer()
-        val userPrivacyPolicy = Preferences(context).getUserPrivacyPolicy()
-        val userShowEventsNotification = Preferences(context).getUserShowEventsNotification()
-        val userShowArticlesNotification = Preferences(context).getUserShowArticlesNotification()
+        val connection = Connection(context)
+        val preferences = Preferences(context)
+        val events = Events(context)
+        val articles = Articles(context)
 
-        // Check for Server connection and privacy policy.
-        // Than create Push Notification.
-        if (connectionToServer && userPrivacyPolicy) {
-
-            val event = Events(context).getNotification()
-            val article = Articles(context).getNotification()
+        // Check if the user has enabled push notifications and if the server connection is available.
+        if (connection.connectionToServer() && preferences.getUserPrivacyPolicy()) {
+            val eventNotificationData = events.getNotification()
+            val articleNotificationData = articles.getNotification()
 
             if (debug) {
-                Log.d(DEBUG_BACKGROUND_WORKER, "Push-Notification Preference Events: \"$userShowEventsNotification\" Articles: \"$userShowArticlesNotification\"")
+                Log.d(DEBUG_BACKGROUND_WORKER, "Push notification preference - events: ${preferences.getUserShowEventsNotification()}, articles: ${preferences.getUserShowArticlesNotification()}")
             }
 
-            // Create event Notification
-            if ((event[EnumEventNotification.FLAG].toBoolean()) && userShowEventsNotification) {
-                newEventNotification(event)
+            // Create event notification if enabled.
+            when {
+                eventNotificationData[EnumEventNotification.FLAG].toBoolean() && preferences.getUserShowEventsNotification() -> {
+                    newEventNotification(eventNotificationData)
+                }
             }
 
-            // Create article Notification
-            if ((article[EnumArticle.FLAG].toBoolean()) && userShowArticlesNotification) {
-                newArticleNotification(article)
+            // Create article notification if enabled.
+            when {
+                articleNotificationData[EnumArticle.FLAG].toBoolean() && preferences.getUserShowArticlesNotification() -> {
+                    newArticleNotification(articleNotificationData)
+                }
             }
 
-            // finally notifying the notification
-            notificationManager(event, article, userShowEventsNotification, userShowArticlesNotification)
+            // Notify the notification manager.
+            notificationManager(eventNotificationData, articleNotificationData, preferences.getUserShowEventsNotification(), preferences.getUserShowArticlesNotification())
         }
     }
 
@@ -286,17 +287,16 @@ class BackgroundNotification(
     }
 
     /**
-     * Creating the notification Channel
-     **/
+     * Creates a notification channel.
+     */
     private fun createNotificationChannel() {
-        // creating notification channel and setting
-        // the description of the channel
+        // Create the channel
         val channel = NotificationChannel(
             channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             description = channelDescription
         }
-        // registering the channel to the System
+        // Registering the channel to the System
         val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }

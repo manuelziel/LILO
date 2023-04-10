@@ -85,6 +85,12 @@
     <string name="share_subject">Linke Liste Ortenau</string>
     <string name="share_message_show_here">Show here:</string>
 
+    //! -- Share App Action PlayStore
+    <string name="share_app_title">Choose one</string>
+    <string name="share_app_subject">Linke Liste Ortenau</string>
+    <string name="share_app_message">Show here for the LiLO App: </string>
+    <string name="share_app_error">Error sharing app</string>
+
     //! -- Contact Text-->
     <string name="contact_first_text">Unsere Treffen finden im R12 (Rammersweierstraße 12) statt. Du bist herzlich dazu eingeladen, bei uns vorbei zu schauen. Eine Anmeldung ist nicht nötig.</string>
     <string name="contact_mail_contact">Write us an eMail</string>

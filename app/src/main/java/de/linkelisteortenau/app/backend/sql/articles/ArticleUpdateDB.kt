@@ -35,7 +35,6 @@ class ArticleUpdateDB(val context: Context) {
         var bool = false
 
         val result = db.execSQL("UPDATE $ARTICLES_TABLE_NAME SET $COLUMN_ARTICLE_FLAG='flag', $COLUMN_ARTICLE_FLAG='${flag}' ")
-        db.close()
 
         if (result.equals(-1) && debug) {
             Log.e(DEBUG_SQL_ARTICLE_UPDATE, "$DEBUG_SQL_ARTICLE_UPDATE_ALL_FAILED\"${flag}\"")
@@ -69,7 +68,6 @@ class ArticleUpdateDB(val context: Context) {
         }
 
         val result = db.update(ARTICLES_TABLE_NAME, values, whereClause, arrayOf(article[EnumArticle.TITLE], article[EnumArticle.LINK]))
-        db.close()
 
         // Debug
         if (result == -1 && debug) {

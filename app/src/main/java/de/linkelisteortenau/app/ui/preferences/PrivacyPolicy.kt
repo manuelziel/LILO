@@ -22,7 +22,6 @@ import androidx.core.view.isVisible
 import de.linkelisteortenau.app.*
 import de.linkelisteortenau.app.backend.connection.Connection
 import de.linkelisteortenau.app.backend.defaults.Defaults
-import de.linkelisteortenau.app.backend.preferences.Preferences
 import de.linkelisteortenau.app.databinding.ActivityPrivacyPolicyBinding
 
 /**
@@ -30,9 +29,6 @@ import de.linkelisteortenau.app.databinding.ActivityPrivacyPolicyBinding
  **/
 class PrivacyPolicy : AppCompatActivity() {
     private lateinit var binding: ActivityPrivacyPolicyBinding
-
-    // Handler
-    private val handler = Handler(Looper.getMainLooper())
 
     /**
      * Lifecycle
@@ -56,13 +52,13 @@ class PrivacyPolicy : AppCompatActivity() {
         val buttonYes: Button = binding.buttonAgree
         val buttonNo: Button = binding.buttonDecline
 
-        binding.progressBarPrivacyPolicy.isVisible = true
-        binding.textViewProgressBarPrivacyPolicy.isVisible = true
-        binding.textViewWebViewPrivacyPolicy404Text.isVisible = false
-        binding.webViewPrivacyPolicy.isVisible = false
-        binding.dividerPrivacyPolicy.isVisible = false
-        binding.buttonAgree.isVisible = false
-        binding.buttonDecline.isVisible = false
+        binding.progressBarPrivacyPolicy.isVisible              = true
+        binding.textViewProgressBarPrivacyPolicy.isVisible      = true
+        binding.textViewWebViewPrivacyPolicy404Text.isVisible   = false
+        binding.webViewPrivacyPolicy.isVisible                  = false
+        binding.dividerPrivacyPolicy.isVisible                  = false
+        binding.buttonAgree.isVisible                           = false
+        binding.buttonDecline.isVisible                         = false
 
         // Button agree
         buttonYes.setOnClickListener {
@@ -92,62 +88,63 @@ class PrivacyPolicy : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun runWebView() {
         val webView: WebView = binding.webViewPrivacyPolicy
-        val progressBarText: TextView = binding.textViewProgressBarPrivacyPolicy
-        val progressBar: ProgressBar = binding.progressBarPrivacyPolicy
-        val webView404Text: TextView = binding.textViewWebViewPrivacyPolicy404Text
+        val handler = Handler(Looper.getMainLooper())
+        val progressBarText: TextView   = binding.textViewProgressBarPrivacyPolicy
+        val progressBar: ProgressBar    = binding.progressBarPrivacyPolicy
+        val webView404Text: TextView    = binding.textViewWebViewPrivacyPolicy404Text
 
-        val divider = binding.dividerPrivacyPolicy
-        val buttonAgree = binding.buttonAgree
-        val buttonDecline = binding.buttonDecline
+        val divider         = binding.dividerPrivacyPolicy
+        val buttonAgree     = binding.buttonAgree
+        val buttonDecline   = binding.buttonDecline
 
+        // Enable JavaScript and store
+        webView.settings.apply {
+            javaScriptEnabled           = true
+            //loadsImagesAutomatically  = true
+            cacheMode                   = WebSettings.LOAD_DEFAULT
+            domStorageEnabled           = true
+            //loadWithOverviewMode      = true
+            //useWideViewPort           = true
+            databaseEnabled             = true
+            //allowFileAccess           = true
+            //allowContentAccess        = true
+            //mixedContentMode          = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            //defaultTextEncodingName   = "utf-8"
+        }
         webView.loadUrl(WEB_VIEW_URL_PRIVACY_POLICY)
 
-        // Java and store
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-        webView.settings.cacheMode = WebSettings.LOAD_DEFAULT
-
         webView.webViewClient = object : WebViewClient() {
-            override fun onLoadResource(view: WebView?, url: String?) {
-                super.onLoadResource(view, url)
-                webView.loadUrl(WEB_VIEW_JAVASCRIPT_REMOVE_COOKIE_NOTICE)
-                webView.loadUrl(WEB_VIEW_JAVASCRIPT_REMOVE_HEADER)
-                webView.loadUrl(WEB_VIEW_JAVASCRIPT_REMOVE_HEADER_FEATURED_IMAGE)
-                webView.loadUrl(WEB_VIEW_JAVASCRIPT_REMOVE_SIDEBAR)
-                webView.loadUrl(WEB_VIEW_JAVASCRIPT_REMOVE_FOOTER)
-            }
-
-            /*
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-                // code here
-            }*/
-
+            // Execute a Javascript command to remove content from the loaded page
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
-                progressBarText.isVisible = false
-                progressBar.isVisible = false
-                webView404Text.isVisible = false
-                webView.isVisible = true
-                divider.isVisible = true
-                buttonAgree.isVisible = true
-                buttonDecline.isVisible = true
+
+                webView.evaluateJavascript(WEB_VIEW_JAVASCRIPT_REMOVE_CONTENT) { _ ->
+                    progressBarText.isVisible   = false
+                    progressBar.isVisible       = false
+                    webView404Text.isVisible    = false
+                    webView.isVisible           = true
+                    divider.isVisible           = true
+                    buttonAgree.isVisible       = true
+                    buttonDecline.isVisible     = true
+                }
             }
 
+            // This method is called when an error occurs while loading a page in the WebView
             override fun onReceivedError(
                 view: WebView?,
                 request: WebResourceRequest?,
                 error: WebResourceError?
             ) {
                 super.onReceivedError(view, request, error)
-                progressBarText.isVisible = false
-                progressBar.isVisible = false
-                webView404Text.isVisible = true
-                webView.isVisible = false
-                divider.isVisible = true
-                buttonAgree.isVisible = false
-                buttonDecline.isVisible = true
+                progressBarText.isVisible       = false
+                progressBar.isVisible           = false
+                webView404Text.isVisible        = true
+                webView.isVisible               = false
+                divider.isVisible               = true
+                buttonAgree.isVisible           = false
+                buttonDecline.isVisible         = true
 
+                // If there's no internet connection, show a toast message to the user
                 if (!Connection(baseContext).connectionToServer()) {
                     Toast.makeText(
                         baseContext,
@@ -157,13 +154,17 @@ class PrivacyPolicy : AppCompatActivity() {
                 }
             }
 
+            // This method is called when a new URL request is about to be loaded in the WebView
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
                 request: WebResourceRequest?
             ): Boolean {
+                // If the requested URL belongs to the HOST_URL_ORGANISATION domain, let the WebView handle it
                 return if (request!!.url.toString().contains(HOST_URL_ORGANISATION)) {
                     super.shouldOverrideUrlLoading(view, request)
-                } else {
+                }
+                // Otherwise, open the URL in an external browser
+                else {
                     val intent = Intent(Intent.ACTION_VIEW, request.url)
                     view!!.context.startActivity(intent)
                     true
@@ -171,7 +172,7 @@ class PrivacyPolicy : AppCompatActivity() {
             }
         }
 
-        // Run loading Text
+        // Start showing a loading progress indicator, with an update interval of 100ms
         if (webView.progress < 100) {
             handler.postDelayed(object : Runnable {
                 override fun run() {

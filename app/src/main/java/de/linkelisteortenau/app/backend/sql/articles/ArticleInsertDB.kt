@@ -41,7 +41,6 @@ class ArticleInsertDB(val context: Context) {
         values.put(COLUMN_ARTICLE_FLAG, article[EnumArticle.FLAG])
 
         val result = db.insert(ARTICLES_TABLE_NAME, null, values).toInt()
-        db.close()
 
         return if (result == -1) {
             if (debug) {

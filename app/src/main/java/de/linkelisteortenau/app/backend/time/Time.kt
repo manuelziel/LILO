@@ -17,48 +17,49 @@ import java.util.*
 import kotlin.collections.HashMap
 
 /**
- * Enum class for global
+ * Enum class for time units
  **/
-enum class EnumTime{YEAR, MONTH, DAY, WEEKDAY, HOUR, MINUTE}
+enum class EnumTime{
+    YEAR, MONTH, DAY, WEEKDAY, HOUR, MINUTE
+}
 
 /**
  * Class to load Time and format Date and Time
  *
  * @param context as Context
  **/
-class Time(val context: Context) {
+class Time(
+    private val context: Context
+    ) {
     private val debug = Preferences(context).getSystemDebug()
     private val locale = Preferences(context).getLocale()
 
     /**
-     * Get Unix System Time as Long in ms "1672072346296"
+     * Get Unix system time as Long in ms "1672072346296"
      *
-     * @return long
+     * @return Long
      **/
-    fun getUnixTime(): Long {
-        return System.currentTimeMillis()
-    }
+    fun getUnixTime(): Long = System.currentTimeMillis()
 
     /**
-     * Get Date and Time format as String "yyyy-MM-dd'T'HH:mm:ssXXX"
+     * Get date and time format as String "yyyy-MM-dd'T'HH:mm:ssXXX"
      *
      * @param unixTime as Time to format to String
-     * @return long
+     * @return String
      **/
     fun getDateFormat(
         unixTime: Long
     ): String {
         val patter = SimpleDateFormat(TIME_PATTER_GLOBAL, Locale.GERMAN)
-        return patter.format(unixTime).toString()
+        return patter.format(unixTime)
     }
 
     /**
-     * Convert date format to unix example use:
-     * return is the unix timestamp
+     * Convert date format to Unix timestamp
      *
      * @param patternAsString as String "yyyy-MM-dd'T'HH:mm:ssXXX"
      * @param timeAsString as String 2019-05-04T12:00:00+02:00
-     * @return long
+     * @return Long?
      **/
     fun dateFormatToUnix(
         patternAsString: String,
@@ -68,7 +69,7 @@ class Time(val context: Context) {
     }
 
     /**
-     * Convert unix or other timestamp to human readable time with locale default from system
+     * Convert Unix or other timestamp to human readable time with system default locale
      *
      * @param unixTime as Long
      * @return HashMap as EnumTime
@@ -79,10 +80,6 @@ class Time(val context: Context) {
         val hashMap: HashMap<EnumTime, String> = HashMap<EnumTime, String>()
 
         if (locale == "DE") {
-            //val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMAN)
-            //val timeZone = TimeZone.getTimeZone("Europe/Berlin")
-            //simpleDateFormat.timeZone = timeZone
-
             val year = SimpleDateFormat(TIME_PATTER_YEAR, Locale.GERMAN)
             val month = SimpleDateFormat(TIME_PATTER_MONTH, Locale.GERMAN)
             val day = SimpleDateFormat(TIME_PATTER_DAY, Locale.GERMAN)
@@ -96,10 +93,6 @@ class Time(val context: Context) {
             hashMap[EnumTime.HOUR] = hour.format(unixTime).toString()
             hashMap[EnumTime.MINUTE] = minute.format(unixTime).toString()
         } else {
-            //val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH)
-            //val timeZone = TimeZone.getTimeZone("Europe/Berlin")
-            //simpleDateFormat.timeZone = timeZone
-
             val year = SimpleDateFormat(TIME_PATTER_YEAR, Locale.ENGLISH)
             val month = SimpleDateFormat(TIME_PATTER_MONTH, Locale.ENGLISH)
             val day = SimpleDateFormat(TIME_PATTER_DAY, Locale.ENGLISH)

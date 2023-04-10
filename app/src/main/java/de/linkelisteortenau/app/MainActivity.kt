@@ -157,11 +157,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Check if the App is Updated. Then set the new default Preferences.
+     * Check if the App is Updated. Then update preferences with new defaults.
      **/
     private fun appUpdated() {
-        if ((Preferences(this).getAppCode() < BuildConfig.VERSION_CODE) && Preferences(this).getUserPrivacyPolicy()){
-            Defaults(this).setNewPreferences()
+        if ((Preferences(this).getAppVersionCode() < BuildConfig.VERSION_CODE) && Preferences(this).getUserPrivacyPolicy()){
+            Defaults(this).updatePreferences()
         }
     }
 

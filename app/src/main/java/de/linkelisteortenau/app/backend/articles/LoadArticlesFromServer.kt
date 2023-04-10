@@ -28,7 +28,7 @@ import java.io.IOException
  *
  * @param context as Context
  **/
-class LoadArticlesFromServer (val context: Context){
+class LoadArticlesFromServer(val context: Context) {
     val debug = Preferences(context).getSystemDebug()
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
@@ -51,7 +51,7 @@ class LoadArticlesFromServer (val context: Context){
      * **/
     fun loadArticles() {
         scope.launch {
-        loadArticlesFunction()
+            loadArticlesFunction()
         }
     }
 
@@ -64,25 +64,23 @@ class LoadArticlesFromServer (val context: Context){
      * Load the elements from first Article. Every element are stored in div.entry-container header h1
      * @see <a href="https://www.linke-liste-ortenau.de/">Home Page</a>
      **/
-    private val articleContent = "null" // No Content implemented
     private fun loadArticlesFunction() {
         try {
             val doc: Document = Jsoup.connect("$WEB_VIEW_HTTP_SCHEM$HOST_URL_ORGANISATION").timeout(0).get()
 
             if (doc.hasText()) {
                 val hashMap: HashMap<EnumArticle, String> = HashMap<EnumArticle, String>()
-                val eContent: Elements = doc.select("div.entry-container h2")
-                val eHeader: MutableList<String> = eContent.select("h2").eachText()
-                val eLink: MutableList<String> = eContent.select("a[href]").eachAttr("href")
+                val eArticles: Elements = doc.select("div.entry-container h2")
+                val eLinks: MutableList<String> = eArticles.select("a[href]").eachAttr("href")
 
-                for (i in 0 until eHeader.size){
-                    hashMap[EnumArticle.TITLE]  = eHeader[i]
-                    hashMap[EnumArticle.CONTENT]= GLOBAL_NULL
-                    hashMap[EnumArticle.LINK]   = eLink[i]
-                    hashMap[EnumArticle.FLAG]   = true.toString()
+                eArticles.forEachIndexed { index, element ->
+                    hashMap[EnumArticle.TITLE] = element.text()
+                    hashMap[EnumArticle.CONTENT] = GLOBAL_NULL
+                    hashMap[EnumArticle.LINK] = eLinks[index]
+                    hashMap[EnumArticle.FLAG] = true.toString()
 
-                    if (debug){
-                        Log.d(DEBUG_LOAD_ARTICLE, "Incoming Article: ${eHeader[i]} with link ${eLink[i]}")
+                    if (debug) {
+                        Log.d(DEBUG_LOAD_ARTICLE, "Incoming Article: ${element.text()} with link ${eLinks[index]}")
                     }
 
                     Articles(context).saveArticles(hashMap)

@@ -36,19 +36,19 @@ const val TIME_PATTER_MINUTE = "mm"
  * Locale Default is "DE"
  **/
 const val PREF_SYSTEM_DEBUG                                 = "pref_system_debug"
-const val PREF_SYSTEM_DEBUG_VALUE                           = "false"
+const val PREF_SYSTEM_DEBUG_VALUE                           = false
 const val PREF_USER_PRIVACY_POLICY                          = "pref_user_privacy_policy"
-const val PREF_USER_PRIVACY_POLICY_VALUE                    = "false"
+const val PREF_USER_PRIVACY_POLICY_VALUE                    = false
 const val PREF_APP_UPDATE                                   = "pref_app_update"
-const val PREF_APP_UPDATE_VALUE                             = "0"
+const val PREF_APP_UPDATE_VALUE                             = 0
 const val PREF_LOCALE                                       = "pref_locale"
 const val PREF_LOCALE_VALUE                                 = "DE"
 const val PREF_USER_SHOW_EVENT_NOTIFICATION                 = "pref_user_show_event_notification"
-const val PREF_USER_SHOW_EVENT_NOTIFICATION_VALUE           = "false"
+const val PREF_USER_SHOW_EVENT_NOTIFICATION_VALUE           = false
 const val PREF_USER_EVENT_NOTIFICATION_TIME_MULTIPLICATOR   = "pref_user_notification_time_multiplicator"
-const val PREF_USER_EVENT_NOTIFICATION_TIME_MULTIPLICATOR_VALUE = "60"
+const val PREF_USER_EVENT_NOTIFICATION_TIME_MULTIPLICATOR_VALUE = 60
 const val PREF_USER_SHOW_ARTICLE_NOTIFICATION               = "pref_user_show_article_notification"
-const val PREF_USER_SHOW_ARTICLE_NOTIFICATION_VALUE         = "false"
+const val PREF_USER_SHOW_ARTICLE_NOTIFICATION_VALUE         = false
 
 /**
  * Constants for user key Preferences.
@@ -94,13 +94,15 @@ const val WEB_VIEW_URL_SOCIAL = "$WEB_VIEW_HTTP_SCHEM$HOST_URL_ORGANISATION/sozi
 const val WEB_VIEW_URL_TRAINING = "$WEB_VIEW_HTTP_SCHEM$HOST_URL_ORGANISATION/bildung/"
 const val WEB_VIEW_URL_PRIVACY_POLICY = "$WEB_VIEW_HTTP_SCHEM$HOST_URL_ORGANISATION/datenschutzerklaerung/"
 
-const val WEB_VIEW_JAVASCRIPT_REMOVE_COOKIE_NOTICE = "javascript:(function() { var cookieNotice = document.getElementsByClassName('cookie-notice-container')[0].style.display='none'; })()"
-const val WEB_VIEW_JAVASCRIPT_REMOVE_HEADER = "javascript:(function() { var header = document.getElementsByClassName('wrapper')[0].style.display='none'; })()"
-const val WEB_VIEW_JAVASCRIPT_REMOVE_HEADER_FEATURED_IMAGE = "javascript:(function() { var headerImage = document.getElementsByClassName('wp-post-image')[0].style.display='none'; })()"
-const val WEB_VIEW_JAVASCRIPT_REMOVE_SIDEBAR = "javascript:(function() { var sidebar = document.getElementsByClassName('sidebar sidebar-primary widget-area')[0].style.display='none'; })()"
-const val WEB_VIEW_JAVASCRIPT_REMOVE_FOOTER = "javascript:(function() { var footer = document.getElementsByClassName('site-footer')[0].style.display='none'; })()"
+//const val WEB_VIEW_JAVASCRIPT_REMOVE_COOKIE_NOTICE = "javascript:(function() { var cookieNotice = document.getElementsByClassName('cookie-notice-container')[0].style.display='none'; })()"
+//const val WEB_VIEW_JAVASCRIPT_REMOVE_HEADER = "javascript:(function() { var header = document.getElementsByClassName('wrapper')[0].style.display='none'; })()"
+//const val WEB_VIEW_JAVASCRIPT_REMOVE_HEADER_FEATURED_IMAGE = "javascript:(function() { var headerImage = document.getElementsByClassName('wp-post-image')[0].style.display='none'; })()"
+//const val WEB_VIEW_JAVASCRIPT_REMOVE_SIDEBAR = "javascript:(function() { var sidebar = document.getElementsByClassName('sidebar sidebar-primary widget-area')[0].style.display='none'; })()"
+//const val WEB_VIEW_JAVASCRIPT_REMOVE_FOOTER = "javascript:(function() { var footer = document.getElementsByClassName('site-footer')[0].style.display='none'; })()"
 // Website has multiple forms! Header, not viewed and last viewed form!
-const val WEB_VIEW_JAVASCRIPT_REMOVE_SEARCH = "javascript:(function() { var search = document.forms[2].style.display='none';  })()"
+//const val WEB_VIEW_JAVASCRIPT_REMOVE_SEARCH = "javascript:(function() { var search = document.forms[2].style.display='none';  })()"
+
+const val WEB_VIEW_JAVASCRIPT_REMOVE_CONTENT = "javascript:(function() { var cookieNotice = document.getElementsByClassName('cookie-notice-container')[0].style.display='none'; var header = document.getElementsByClassName('wrapper')[0].style.display='none'; var headerImage = document.getElementsByClassName('wp-post-image')[0].style.display='none'; var sidebar = document.getElementsByClassName('sidebar sidebar-primary widget-area')[0].style.display='none'; var footer = document.getElementsByClassName('site-footer')[0].style.display='none'; var search = document.forms[2].style.display='none'; } )()"
 
 /**
  * Constants for Social Media connect

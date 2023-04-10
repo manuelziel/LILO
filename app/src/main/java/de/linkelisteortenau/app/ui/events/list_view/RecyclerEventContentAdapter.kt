@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import de.linkelisteortenau.app.R
+import de.linkelisteortenau.app.backend.events.DataEvents
 
 /**
  * Class to show Data Events
@@ -60,13 +61,13 @@ class RecyclerEventContentAdapter(private val onClick: (DataEvents) -> Unit) :
         ) {
             currentEvent = event
 
-            eventTextTitle.text = event.eventTitle
-            eventTextWeekday.text = event.eventWeekday
-            eventTextDay.text = event.eventDate
+            eventTextTitle.text = event.title
+            eventTextWeekday.text = event.weekday
+            eventTextDay.text = event.date
             //eventTextStartText.text = context.getString(R.string.event_recycler_event_start_text)
-            eventTextStartTime.text = event.eventStart
+            eventTextStartTime.text = event.start
             //eventTextEndText.text = context.getString(R.string.event_recycler_event_end_text)
-            eventTextEndTime.text = event.eventEnd
+            eventTextEndTime.text = event.end
         }
     }
 

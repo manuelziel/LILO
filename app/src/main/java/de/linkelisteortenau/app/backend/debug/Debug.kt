@@ -11,19 +11,22 @@ package de.linkelisteortenau.app.backend.debug
  * Constants for the Debug
  **/
 //const val DEBUG = "DEBUG"
-const val DEBUG_INTENT_WORKER = "Intent Worker"
+const val DEBUG_INTENT_WORKER                       = "Intent Worker"
 
 /** Set Defaults **/
-const val DEBUG_SET_DEFAULTS = "LiLO_set_Defaults"
-const val DEBUG_SET_DEFAULTS_DEFAULTS = "First Defaults are set"
-const val DEBUG_SET_DEFAULTS_NEW_DEFAULTS = "New Defaults are set"
+const val DEBUG_SET_DEFAULTS                        = "LiLO_set_Defaults"
+const val DEBUG_SET_DEFAULTS_DEFAULTS               = "First Defaults are set"
+const val DEBUG_SET_DEFAULTS_NEW_DEFAULTS           = "New Defaults are set"
 
 /** BACKGROUND Worker **/
-const val DEBUG_BACKGROUND_BROADCAST_RECEIVER = "LiLO_Backend_Broadcast_Receiver"
-const val DEBUG_BACKGROUND_WORKER = "LiLO_Backend_Worker"
-const val DEBUG_BACKGROUND_LOOP_ARTICLES = " -> run Articles"
-const val DEBUG_BACKGROUND_LOOP_EVENTS = " -> run Events"
-//const val DEBUG_BACKGROUND_LOOP_NOTIFICATION = " -> run Notification"
+const val DEBUG_BACKGROUND_BROADCAST_RECEIVER       = "LiLO_Backend_Broadcast_Receiver"
+const val DEBUG_BACKGROUND_WORKER                   = "LiLO_Backend_Worker"
+const val DEBUG_BACKGROUND_LOOP_ARTICLES            = " -> run Articles"
+const val DEBUG_BACKGROUND_LOOP_EVENTS              = " -> run Events"
+//const val DEBUG_BACKGROUND_LOOP_NOTIFICATION      = " -> run Notification"
+
+/** Preferences **/
+const val DEBUG_PREFERENCES                         = "LiLO_Preferences"
 
 /** Permission Notification **/
 const val DEBUG_PERMISSION_NOTIFICATION             = "LiLO_Permission_Notification"
@@ -38,7 +41,7 @@ const val DEBUG_EVENT_LOAD_TEST_LINK                = "https://www.linke-liste-o
 const val DEBUG_TIME                                = "LiLO_Time"
 
 /** WebView **/
-//const val DEBUG_WEB_VIEW_ERROR                      = "LiLO_WebView"
+//const val DEBUG_WEB_VIEW_ERROR                    = "LiLO_WebView"
 
 /** Event **/
 const val DEBUG_EVENT                               = "LiLO_Event"

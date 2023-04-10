@@ -14,7 +14,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import de.linkelisteortenau.app.WEB_VIEW_URL_LOCAL_TRANSPORT
 import de.linkelisteortenau.app.databinding.FragmentWebViewBinding
-import de.linkelisteortenau.app.ui.WebView
+import de.linkelisteortenau.app.ui.WebViewController
 
 /**
  * Class for Content
@@ -22,23 +22,6 @@ import de.linkelisteortenau.app.ui.WebView
 class LocalTransportFragment : Fragment() {
     private var _binding: FragmentWebViewBinding? = null
     private val binding get() = _binding!!
-
-    /**
-     * Lifecycle
-     *
-     * Fragment lifecycle create
-     * with inflate transition
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     * @see <a href="https://developer.android.com/guide/fragments/animate">Fragment Animate</a>
-     **/
-    override fun onCreate(
-        savedInstanceState: Bundle?
-    ) {
-        super.onCreate(savedInstanceState)
-        //val inflater = TransitionInflater.from(requireContext())
-        //enterTransition = inflater.inflateTransition(R.transition.fade)
-        //exitTransition = inflater.inflateTransition(R.transition.fade)
-    }
 
     /**
      * Lifecycle
@@ -59,32 +42,12 @@ class LocalTransportFragment : Fragment() {
         binding.textViewWebView404Text.isVisible = false
         binding.webView.isVisible = false
 
-        return root
-    }
-
-    /**
-     * Lifecycles
-     *
-     * Fragment lifecycle start
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     **/
-    override fun onStart() {
-        super.onStart()
-
         // View web content
         val requireActivity = requireActivity()
         val url = (WEB_VIEW_URL_LOCAL_TRANSPORT)
-        context?.let { WebView(it).run(requireActivity, binding, url, parentLink = url) }
-    }
+        context?.let { WebViewController(it).run(requireActivity, binding, url, parentLink = url) }
 
-    /**
-     * Lifecycles
-     *
-     * Fragment lifecycle resume
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     **/
-    override fun onResume() {
-        super.onResume()
+        return root
     }
 
     /**

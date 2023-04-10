@@ -29,21 +29,6 @@ class ContactFragment : Fragment() {
     /**
      * Lifecycle
      *
-     * Fragment lifecycle create
-     * with inflate transition
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     * @see <a href="https://developer.android.com/guide/fragments/animate">Fragment Animate</a>
-     **/
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //val inflater = TransitionInflater.from(requireContext())
-        //enterTransition = inflater.inflateTransition(R.transition.fade)
-        //exitTransition = inflater.inflateTransition(R.transition.fade)
-    }
-
-    /**
-     * Lifecycle
-     *
      * Fragment lifecycle create view
      * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
      **/
@@ -100,16 +85,6 @@ class ContactFragment : Fragment() {
             context?.let { Facebook(it).performToGroup() }
         }
         return root
-    }
-
-    /**
-     * Lifecycles
-     *
-     * Fragment lifecycle resume
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     **/
-    override fun onResume() {
-        super.onResume()
     }
 
     /**

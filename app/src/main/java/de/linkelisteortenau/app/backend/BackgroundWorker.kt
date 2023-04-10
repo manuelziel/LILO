@@ -13,8 +13,6 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import de.linkelisteortenau.app.backend.articles.Articles
 import de.linkelisteortenau.app.backend.connection.Connection
-import de.linkelisteortenau.app.backend.debug.DEBUG_BACKGROUND_LOOP_ARTICLES
-import de.linkelisteortenau.app.backend.debug.DEBUG_BACKGROUND_LOOP_EVENTS
 import de.linkelisteortenau.app.backend.debug.DEBUG_BACKGROUND_WORKER
 import de.linkelisteortenau.app.backend.events.Events
 import de.linkelisteortenau.app.backend.preferences.Preferences
@@ -28,8 +26,15 @@ import de.linkelisteortenau.app.backend.preferences.Preferences
  * @param workerParams with Parameter for the Worker
  * @result Worker with Context and Parameter for the Worker
  **/
-class BackgroundWorker(val context: Context, workerParams: WorkerParameters) :
+class BackgroundWorker(
+    val context: Context,
+    workerParams: WorkerParameters
+) :
     Worker(context, workerParams) {
+
+    // Save Context-Object
+    private val articles = Articles(context)
+    private val events = Events(context)
 
     override fun doWork(): Result {
 
@@ -51,10 +56,9 @@ class BackgroundWorker(val context: Context, workerParams: WorkerParameters) :
      *
      *  4. check for new Push-Notifications and show them.
      **/
-    private var debug: Boolean = false
     private fun runBackgroundHandler() {
         // Check accepted user privacy policy
-        debug = Preferences(context).getSystemDebug()
+        val debug = Preferences(context).getSystemDebug()
         val userPrivacyPolicy = Preferences(context).getUserPrivacyPolicy()
 
         if (debug) {
@@ -63,63 +67,30 @@ class BackgroundWorker(val context: Context, workerParams: WorkerParameters) :
         }
 
         // Check the connection to the server and the accepted user privacy policy.
-        // Check Events and Notifications from Server.
-        eventsLoop(context)
-        articlesLoop(context)
+        // Check Events and Article Notifications from Server.
+        if (Connection(context).connectionToServer() && userPrivacyPolicy) {
+            eventsLoop()
+            articlesLoop()
+        } else {
+            events.check()
+            articles.check()
+        }
     }
 
     /**
-     * Check Events in an time Loop.
-     *
-     * @param context as Context
+     * Check Events
      **/
-    private fun eventsLoop(
-        context: Context
-    ) {
-        // Run Check and get all Events from Server
-        val debug = Preferences(context).getSystemDebug()
-        val connectionToServer = Connection(context).connectionToServer()
-        val userPrivacyPolicy = Preferences(context).getUserPrivacyPolicy()
-
-        if (debug) {
-            Log.d(DEBUG_BACKGROUND_WORKER, DEBUG_BACKGROUND_LOOP_EVENTS)
-        }
-
-        // Check for Server connection and privacy policy and check the Events.
-        // Than get all Events if connection is available.
-        if (connectionToServer && userPrivacyPolicy) {
+    private fun eventsLoop() {
             Events(context).check()
             Events(context).loadEventsFromServer()
-        } else {
-            Events(context).check()
-        }
     }
 
     /**
-     * Check Articles in an time Loop
-     *
-     * @param context as Context
+     * Check Articles
      **/
-    private fun articlesLoop(
-        context: Context
-    ) {
-        // Run Check and get Articles from Server
-        val debug = Preferences(context).getSystemDebug()
-        val connectionToServer = Connection(context).connectionToServer()
-        val userPrivacyPolicy = Preferences(context).getUserPrivacyPolicy()
-
-        if (debug) {
-            Log.d(DEBUG_BACKGROUND_WORKER, DEBUG_BACKGROUND_LOOP_ARTICLES)
-        }
-
-        // Check for Server connection and privacy policy and check the Events.
-        // Than get all Events if connection is available.
-        if (connectionToServer && userPrivacyPolicy) {
+    private fun articlesLoop() {
             Articles(context).check()
             Articles(context).loadArticlesFromServer()
-        } else {
-            Articles(context).check()
-        }
     }
 }
 

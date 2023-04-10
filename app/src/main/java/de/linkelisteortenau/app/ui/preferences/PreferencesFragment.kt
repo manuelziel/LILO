@@ -39,24 +39,25 @@ class PreferencesFragment : Fragment() {
         super.onCreate(savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.pref_user_title)
 
+        val preferencesManager = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val preference = Preferences(requireContext())
+
         // Set switch Event Notification with preference Value
-        PreferenceManager.getDefaultSharedPreferences(requireContext())
-            .edit().putBoolean(
-                USER_PREF_KEY_EVENT_NOTIFICATION, Preferences(requireContext()).getUserShowEventsNotification()
+        preferencesManager.edit().putBoolean(
+                USER_PREF_KEY_EVENT_NOTIFICATION,
+            preference.getUserShowEventsNotification()
             ).apply()
 
         // Set switch Article Notification with preference Value
-        PreferenceManager.getDefaultSharedPreferences(requireContext())
-            .edit().putBoolean(
+        preferencesManager.edit().putBoolean(
                 USER_PREF_KEY_ARTICLE_NOTIFICATION,
-                Preferences(requireContext()).getUserShowArticlesNotification()
+            preference.getUserShowArticlesNotification()
             ).apply()
 
         // Set switch Debug with preference Value
-        PreferenceManager.getDefaultSharedPreferences(requireContext())
-            .edit().putBoolean(
+        preferencesManager.edit().putBoolean(
                 USER_PREF_KEY_DEBUG,
-                Preferences(requireContext()).getSystemDebug()
+            preference.getSystemDebug()
             ).apply()
 
         // Replace FragmentLayout with Preferences XML

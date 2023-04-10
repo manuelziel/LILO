@@ -53,7 +53,6 @@ class ArticleDeleteDB(val context: Context) {
      **/
     fun deleteDuplicatesInSQL() {
         val result = db.execSQL("DELETE FROM articles_table_lilo WHERE EXISTS ( SELECT 1 FROM articles_table_lilo p2 WHERE articles_table_lilo.title = p2.title AND articles_table_lilo.link = p2.link AND articles_table_lilo.rowid > p2.rowid);")
-        db.close()
 
         // Debug
         if (result.equals(-1) && debug) {

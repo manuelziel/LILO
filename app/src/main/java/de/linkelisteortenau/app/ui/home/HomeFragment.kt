@@ -16,7 +16,7 @@ import de.linkelisteortenau.app.HOST_URL_ORGANISATION
 import de.linkelisteortenau.app.WEB_VIEW_HTTP_SCHEM
 import de.linkelisteortenau.app.backend.notification.EnumNotificationBundle
 import de.linkelisteortenau.app.databinding.FragmentWebViewBinding
-import de.linkelisteortenau.app.ui.WebView
+import de.linkelisteortenau.app.ui.WebViewController
 
 /**
  * Class for Content
@@ -26,21 +26,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var link: String
     private lateinit var parentLink: String
-
-    /**
-     * Lifecycle
-     *
-     * Fragment lifecycle create
-     * with inflate transition
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     * @see <a href="https://developer.android.com/guide/fragments/animate">Fragment Animate</a>
-     **/
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //val inflater = TransitionInflater.from(requireContext())
-        //enterTransition = inflater.inflateTransition(R.transition.fade)
-        //exitTransition = inflater.inflateTransition(R.transition.fade)
-    }
 
     /**
      * Lifecycle
@@ -73,32 +58,12 @@ class HomeFragment : Fragment() {
         binding.textViewWebView404Text.isVisible = false
         binding.webView.isVisible = false
 
-        return root
-    }
-
-    /**
-     * Lifecycles
-     *
-     * Fragment lifecycle start
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     **/
-    override fun onStart() {
-        super.onStart()
-
         // View web content
         val requireActivity = requireActivity()
 
-        context?.let { WebView(it).run(requireActivity, binding, link, parentLink = parentLink) }
-    }
+        context?.let { WebViewController(it).run(requireActivity, binding, link, parentLink = parentLink) }
 
-    /**
-     * Lifecycles
-     *
-     * Fragment lifecycle resume
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     **/
-    override fun onResume() {
-        super.onResume()
+        return root
     }
 
     /**

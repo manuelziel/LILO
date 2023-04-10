@@ -1,13 +1,11 @@
 package de.linkelisteortenau.app.backend.articles
 
 import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import de.linkelisteortenau.app.backend.debug.DEBUG_ARTICLE
 import de.linkelisteortenau.app.backend.preferences.Preferences
-import de.linkelisteortenau.app.backend.sql.articles.ArticleDeleteDB
-import de.linkelisteortenau.app.backend.sql.articles.ArticleGetDB
-import de.linkelisteortenau.app.backend.sql.articles.ArticleInsertDB
-import de.linkelisteortenau.app.backend.sql.articles.ArticleUpdateDB
+import de.linkelisteortenau.app.backend.sql.articles.*
 
 /**
  * @author Manuel Ziel
@@ -26,8 +24,17 @@ enum class EnumArticle { TITLE, CONTENT, LINK, FLAG }
  *
  * @param context as Context
  **/
-class Articles(val context: Context) {
-    val debug = Preferences(context).getSystemDebug()
+class Articles(
+    val context: Context
+    ) {
+    private val dbHelper                = ArticleDBHelper(context)
+    private val db: SQLiteDatabase      = dbHelper.writableDatabase
+    private val articleGetDB            = ArticleGetDB(context)
+    private val articleInsertDB         = ArticleInsertDB(context)
+    private val articleUpdateDB         = ArticleUpdateDB(context)
+    private val articleDeleteDB         = ArticleDeleteDB(context)
+    private val loadArticlesFromServer  = LoadArticlesFromServer(context)
+    private val debug                   = Preferences(context).getSystemDebug()
 
     /**
      * Check all Events delete Duplicates and
@@ -60,35 +67,7 @@ class Articles(val context: Context) {
         // Query Article with the Title and Link
         val queryArticle = getQueryArticle(article)
 
-        if ((!article[EnumArticle.TITLE].isNullOrBlank()
-                    || !article[EnumArticle.CONTENT].isNullOrBlank()
-                    || !article[EnumArticle.LINK].isNullOrBlank()
-                    || !article[EnumArticle.FLAG].isNullOrBlank())
-            && !queryArticle
-        ) {
-            // Save here
-            setArticle(article)
-
-            if (debug) {
-                Log.d(
-                    DEBUG_ARTICLE,
-                    "\n \n"
-                )
-            }
-
-        } else if (queryArticle) {
-            // Article already in the SQL
-            if (debug) {
-                Log.d(
-                    DEBUG_ARTICLE,
-                    "Article already saved with " +
-                            "Title: \"${article[EnumArticle.TITLE]}\" " +
-                            "Content: \"${article[EnumArticle.CONTENT]} " +
-                            "Link: \"${article[EnumArticle.LINK]}\" " +
-                            "Flag: \"${article[EnumArticle.FLAG]}\" \n \n"
-                )
-            }
-        } else {
+        if (article.values.any { it.isBlank() }) {
             // Article NULL or Blank
             if (debug) {
                 Log.e(
@@ -100,6 +79,37 @@ class Articles(val context: Context) {
                             "Flag: \"${article[EnumArticle.FLAG]}\" \n \n"
                 )
             }
+            return
+        }
+
+        // Query Article with the Title and Link
+        if (queryArticle) {
+            // Article already in the SQL
+            if (debug) {
+                Log.d(
+                    DEBUG_ARTICLE,
+                    "Article already saved with " +
+                            "Title: \"${article[EnumArticle.TITLE]}\" " +
+                            "Content: \"${article[EnumArticle.CONTENT]} " +
+                            "Link: \"${article[EnumArticle.LINK]}\" " +
+                            "Flag: \"${article[EnumArticle.FLAG]}\" \n \n"
+                )
+            }
+            return
+        }
+
+        // Save new article
+        setArticle(article)
+
+        if (debug) {
+            Log.d(
+                DEBUG_ARTICLE,
+                "Saved Article with " +
+                        "Title: \"${article[EnumArticle.TITLE]}\" " +
+                        "Content: \"${article[EnumArticle.CONTENT]} " +
+                        "Link: \"${article[EnumArticle.LINK]}\" " +
+                        "Flag: \"${article[EnumArticle.FLAG]}\""
+            )
         }
     }
 
@@ -111,7 +121,8 @@ class Articles(val context: Context) {
     private fun setArticle(
         article: HashMap<EnumArticle, String>
     ) {
-        ArticleInsertDB(context).insertArticle(article)
+        articleInsertDB.insertArticle(article)
+        db.close()
     }
 
     /**
@@ -122,7 +133,8 @@ class Articles(val context: Context) {
     private fun setAllArticlesFlags(
         flag: Boolean
     ) {
-        ArticleUpdateDB(context).setAllArticleFlags(flag)
+        articleUpdateDB.setAllArticleFlags(flag)
+        db.close()
     }
 
     /**
@@ -135,7 +147,10 @@ class Articles(val context: Context) {
     private fun getQueryArticle(
         article: HashMap<EnumArticle, String>
     ): Boolean {
-        return ArticleGetDB(context).queryData(article)
+        val queryData = articleGetDB.queryData(article)
+        db.close()
+
+        return queryData
     }
 
     /**
@@ -144,7 +159,10 @@ class Articles(val context: Context) {
      * @return Array with HashMap with EnumArticles<String>
      **/
     private fun getArticles(): ArrayList<HashMap<EnumArticle, String>> {
-        return ArticleGetDB(context).readData()
+        val readData = articleGetDB.readData()
+        db.close()
+
+        return readData
     }
 
     /**
@@ -156,7 +174,10 @@ class Articles(val context: Context) {
     private fun getFlaggedArticles(
         flag: Boolean
     ): ArrayList<HashMap<EnumArticle, String>> {
-        return ArticleGetDB(context).queryFlaggedArticles(flag)
+        val flaggedArticles = articleGetDB.queryFlaggedArticles(flag)
+        db.close()
+
+        return flaggedArticles
     }
 
     /**
@@ -165,39 +186,46 @@ class Articles(val context: Context) {
     private fun deleteFlaggedArticles(
         flag: Boolean
     ) {
-        ArticleDeleteDB(context).deleteFlaggedArticles(flag)
+        articleDeleteDB.deleteFlaggedArticles(flag)
+        db.close()
     }
 
     /**
      * Delete duplicates in SQL-Database.
      **/
     private fun deleteDuplicates() {
-        ArticleDeleteDB(context).deleteDuplicatesInSQL()
+        articleDeleteDB.deleteDuplicatesInSQL()
+        db.close()
     }
 
     /**
-     * get the new Article from SQL.
+     * Get the new Article from SQL.
      *
      * return as HashMap with EnumArticles as String
      **/
     fun getNotification(): HashMap<EnumArticle, String> {
-        val returnHashMap: HashMap<EnumArticle, String> = HashMap<EnumArticle, String>()
-        val arrayTrue: ArrayList<HashMap<EnumArticle, String>> = getFlaggedArticles(true)
-        val arrayFalse: ArrayList<HashMap<EnumArticle, String>> = getFlaggedArticles(false)
+        val returnHashMap = HashMap<EnumArticle, String>()
+        val arrayTrue = getFlaggedArticles(true)
+        val arrayFalse = getFlaggedArticles(false)
 
         for (i in 0 until arrayTrue.size) {
             val hashMap = arrayTrue[i]
 
             if (hashMap[EnumArticle.FLAG].toBoolean()) {
-                returnHashMap[EnumArticle.TITLE] = hashMap[EnumArticle.TITLE].toString()
-                returnHashMap[EnumArticle.CONTENT] = hashMap[EnumArticle.CONTENT].toString()
-                returnHashMap[EnumArticle.LINK] = hashMap[EnumArticle.LINK].toString()
-                returnHashMap[EnumArticle.FLAG] = hashMap[EnumArticle.FLAG].toString()
-
-                // Delete all old Articles with the Flag false after that set the new Articles to the Flag false
-                if (arrayFalse.isNotEmpty()) {
-                    deleteFlaggedArticles(false)
+                returnHashMap.apply {
+                    put(EnumArticle.TITLE, hashMap[EnumArticle.TITLE].toString())
+                    put(EnumArticle.CONTENT, hashMap[EnumArticle.CONTENT].toString())
+                    put(EnumArticle.LINK, hashMap[EnumArticle.LINK].toString())
+                    put(EnumArticle.FLAG, hashMap[EnumArticle.FLAG].toString())
                 }
+
+                /* Delete all old Articles with the Flag false after that set the new Articles to the Flag false
+                when {
+                    arrayFalse.isNotEmpty() -> deleteFlaggedArticles(false)
+                    else -> Unit
+                }
+                */
+
                 setAllArticlesFlags(false)
                 break
             }
@@ -210,7 +238,7 @@ class Articles(val context: Context) {
      **/
     fun loadArticlesFromServer(
     ) {
-        LoadArticlesFromServer(context).loadArticles()
+        loadArticlesFromServer.loadArticles()
     }
 
     /**
@@ -218,6 +246,6 @@ class Articles(val context: Context) {
      */
     fun deleteDatabase(
     ) {
-        ArticleDeleteDB(context).deleteSQL()
+        articleDeleteDB.deleteSQL()
     }
 }

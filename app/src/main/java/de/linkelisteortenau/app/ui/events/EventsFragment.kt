@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import de.linkelisteortenau.app.R
+import de.linkelisteortenau.app.backend.events.DataEvents
 import de.linkelisteortenau.app.backend.notification.EnumNotificationBundle
 import de.linkelisteortenau.app.databinding.RecyclerViewBinding
 import de.linkelisteortenau.app.ui.events.list_view.*
@@ -30,21 +31,6 @@ class EventsFragment : Fragment() {
     //private val newEventsActivityRequestCode = 1
     private val contentListViewModel by viewModels<EventsListViewModel> {
         EventsListViewModelFactory(requireContext())
-    }
-
-    /**
-     * Lifecycle
-     *
-     * Fragment lifecycle create
-     * with inflate transition
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     * @see <a href="https://developer.android.com/guide/fragments/animate">Fragment Animate</a>
-     **/
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //val inflater = TransitionInflater.from(requireContext())
-        //enterTransition = inflater.inflateTransition(R.transition.fade)
-        //exitTransition = inflater.inflateTransition(R.transition.fade)
     }
 
     /**
@@ -88,20 +74,10 @@ class EventsFragment : Fragment() {
         event: DataEvents
     ) {
         val extra = Bundle()
-        extra.putString(EnumNotificationBundle.LINK.string, event.eventLink)
+        extra.putString(EnumNotificationBundle.LINK.string, event.link)
 
         val navController = findNavController()
         navController.navigate(R.id.nav_event_content, extra)
-    }
-
-    /**
-     * Lifecycles
-     *
-     * Fragment lifecycle resume
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     **/
-    override fun onResume() {
-        super.onResume()
     }
 
     /**

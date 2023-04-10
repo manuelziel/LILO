@@ -25,23 +25,6 @@ class SearchFragment : Fragment() {
     /**
      * Lifecycle
      *
-     * Fragment lifecycle create
-     * with inflate transition
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     * @see <a href="https://developer.android.com/guide/fragments/animate">Fragment Animate</a>
-     **/
-    override fun onCreate(
-        savedInstanceState: Bundle?
-    ) {
-        super.onCreate(savedInstanceState)
-        //val inflater = TransitionInflater.from(requireContext())
-        //enterTransition = inflater.inflateTransition(R.transition.fade)
-        //exitTransition = inflater.inflateTransition(R.transition.fade)
-    }
-
-    /**
-     * Lifecycle
-     *
      * Fragment lifecycle create view
      * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
      **/
@@ -71,26 +54,6 @@ class SearchFragment : Fragment() {
     /**
      * Lifecycles
      *
-     * Fragment lifecycle start
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     **/
-    override fun onStart() {
-        super.onStart()
-    }
-
-    /**
-     * Lifecycles
-     *
-     * Fragment lifecycle resume
-     * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
-     **/
-    override fun onResume() {
-        super.onResume()
-    }
-
-    /**
-     * Lifecycles
-     *
      * Fragment lifecycle destroy
      * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
      **/
@@ -100,9 +63,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun search (search: String){
+
         // View web content
-        val requireActivity = requireActivity()
         val url = ("$WEB_VIEW_URL_SEARCH?s=$search")
-        context?.let { WebViewSearch(it).run(requireActivity, binding, url) }
+        context?.let { WebViewSearch(it).run(requireActivity(), binding, url) }
     }
 }

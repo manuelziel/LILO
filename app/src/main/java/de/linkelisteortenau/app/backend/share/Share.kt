@@ -14,32 +14,35 @@ import de.linkelisteortenau.app.backend.debug.DEBUG_SHARE
 import de.linkelisteortenau.app.backend.preferences.Preferences
 
 /**
- * Class for share content
+ * Wrapper class for sharing content via an Intent
  *
- * @param context as Context
+ * @param context the context in which the intent will be launched
  **/
-class Share(val context: Context) {
+class Share(
+    private val context: Context
+    ) {
 
     /**
-     * Function for share content
+     * Shares content via an Intent
      *
-     * @param url as URL of the content link
+     * @param url the URL of the content to share
      **/
-    fun shareContent(url: String?) {
+    fun shareContent(
+        url: String?
+    ) {
+        url ?: return
+
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.share_subject))
+        val shareMessage = "${context.getString(R.string.share_message_show_here)}\n\n$url"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+
         try {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.share_subject))
-            var shareMessage = "\n ${context.getString(R.string.share_message_show_here)} \n\n"
-            shareMessage =
-                """
-                ${shareMessage}${url}
-                """.trimIndent()
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
             context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_chooser_title)))
         } catch (e: Exception) {
             if (Preferences(context).getSystemDebug()) {
-                Log.w(DEBUG_SHARE, e.toString())
+                Log.w(DEBUG_SHARE, "Failed to share content: ${e.message}")
             }
         }
     }

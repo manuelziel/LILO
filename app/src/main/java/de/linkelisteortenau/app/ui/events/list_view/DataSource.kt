@@ -9,6 +9,7 @@ package de.linkelisteortenau.app.ui.events.list_view
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import de.linkelisteortenau.app.backend.events.DataEvents
 import de.linkelisteortenau.app.backend.events.Events
 
 /**
@@ -86,7 +87,7 @@ class DataSource(context: Context) {
      */
     fun getRandomEventImageAsset(): Int {
         val randomNumber = (initialEventsList.indices).random()
-        return initialEventsList[randomNumber].eventStart.toInt()
+        return initialEventsList[randomNumber].start.toInt()
     }
 
 
