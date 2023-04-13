@@ -19,6 +19,7 @@ import de.linkelisteortenau.app.backend.sql.events.EventInsertDB
 import de.linkelisteortenau.app.backend.sql.events.EventUpdateDB
 import de.linkelisteortenau.app.backend.time.EnumTime
 import de.linkelisteortenau.app.backend.time.Time
+import java.util.EnumMap
 import kotlin.random.Random
 
 /**
@@ -74,7 +75,7 @@ class Events(
         deleteDuplicates()
 
         if (debug) {
-            val array: ArrayList<HashMap<EnumEvent, String>> = getEvents()
+            val array: ArrayList<MutableMap<EnumEvent, String>> = getEvents()
 
             for (i in 0 until array.size) {
                 val hashMap = array[i]
@@ -94,31 +95,31 @@ class Events(
      **/
     @Suppress("SameParameterValue")
     fun saveEvent(
-        event: HashMap<EnumEvent, String>
+        event: MutableMap<EnumEvent, String>
     ) {
         val eventStartAsLong = time.dateFormatToUnix(event[EnumEvent.PATTER].toString(), event[EnumEvent.START].toString())
         val eventEndAsLong = time.dateFormatToUnix(event[EnumEvent.PATTER].toString(), event[EnumEvent.END].toString()) ?: return
-        val hashMap: HashMap<EnumEvent, String> = HashMap<EnumEvent, String>()
+        val mutableMap: MutableMap<EnumEvent, String> = EnumMap<EnumEvent, String>(EnumEvent::class.java)
 
-        hashMap[EnumEvent.TITLE] = event[EnumEvent.TITLE].toString()
-        hashMap[EnumEvent.CONTENT] = event[EnumEvent.CONTENT].toString()
-        hashMap[EnumEvent.START] = eventStartAsLong.toString()
-        hashMap[EnumEvent.END] = eventEndAsLong.toString()
-        hashMap[EnumEvent.LINK] = event[EnumEvent.LINK].toString()
-        hashMap[EnumEvent.FLAG] = event[EnumEvent.FLAG].toString()
+        mutableMap[EnumEvent.TITLE]     = event[EnumEvent.TITLE].toString()
+        mutableMap[EnumEvent.CONTENT]   = event[EnumEvent.CONTENT].toString()
+        mutableMap[EnumEvent.START]     = eventStartAsLong.toString()
+        mutableMap[EnumEvent.END]       = eventEndAsLong.toString()
+        mutableMap[EnumEvent.LINK]      = event[EnumEvent.LINK].toString()
+        mutableMap[EnumEvent.FLAG]      = event[EnumEvent.FLAG].toString()
 
         // Check the SQL and event end
-        if ((!eventGetDB.queryData(hashMap)) && (eventEndAsLong > time.getUnixTime())) {
-            setEvent(hashMap)
+        if ((!eventGetDB.queryData(mutableMap)) && (eventEndAsLong > time.getUnixTime())) {
+            setEvent(mutableMap)
         }
 
         // Set Event Flag to true if this is already in the DB and the Event end is in the future
-        else if ((eventGetDB.queryData(hashMap)) && (eventEndAsLong > time.getUnixTime())) {
+        else if ((eventGetDB.queryData(mutableMap)) && (eventEndAsLong > time.getUnixTime())) {
             if (eventStartAsLong != null) {
                 if (debug) {
                     Log.d(DEBUG_EVENT, "$DEBUG_EVENT_ALREADY_SAVED\"${event[EnumEvent.TITLE]}\"")
                 }
-                setEventFlag(hashMap)
+                setEventFlag(mutableMap)
             }
 
         } else if (debug) {
@@ -132,7 +133,7 @@ class Events(
      * @param event as HashMap with EnumEvent<String>
      **/
     private fun setEvent(
-        event: HashMap<EnumEvent, String>
+        event: MutableMap<EnumEvent, String>
     ) {
         eventInsertDB.insertEvent(event)
     }
@@ -143,7 +144,7 @@ class Events(
      * @param event as HashMap with EnumEvent<String>
      **/
     fun setAllEventFlags(
-        event: HashMap<EnumEvent, String>
+        event: MutableMap<EnumEvent, String>
     ) {
         if (event[EnumEvent.FLAG].toBoolean().not()) {
             eventUpdateDB.setAllEventFlags(event)
@@ -151,7 +152,7 @@ class Events(
 
         // Debug
         if (debug) {
-            val array: ArrayList<HashMap<EnumEvent, String>> = getEvents()
+            val array: ArrayList<MutableMap<EnumEvent, String>> = getEvents()
             for (i in 0 until array.size) {
                 val hashMap = array[i]
 
@@ -168,7 +169,7 @@ class Events(
      * @param event as HashMap with EnumEvent<String>
      **/
     private fun setEventFlag(
-        event: HashMap<EnumEvent, String>,
+        event: MutableMap<EnumEvent, String>,
     ) {
         eventUpdateDB.setEventFlag(event)
     }
@@ -178,7 +179,7 @@ class Events(
      *
      * @return ArrayList as HashMap, EnumEvent as String
      **/
-    private fun getEvents(): ArrayList<HashMap<EnumEvent, String>> {
+    private fun getEvents(): ArrayList<MutableMap<EnumEvent, String>> {
         return eventGetDB.readData()
     }
 
@@ -234,8 +235,8 @@ class Events(
     /**
      * Get the next Events from the SQL-Database.
      **/
-    fun getNotification(): HashMap<EnumEventNotification, String> {
-        val notificationHashMap: HashMap<EnumEventNotification, String> = HashMap<EnumEventNotification, String>()
+    fun getNotification(): MutableMap<EnumEventNotification, String> {
+        val notificationHashMap: MutableMap<EnumEventNotification, String> = EnumMap(EnumEventNotification::class.java)
         val array = getEvents()
 
         // Std Variables for Event checker
@@ -244,29 +245,29 @@ class Events(
         val currentTime = time.getUnixTime()
 
         for (i in 0 until array.size) {
-            val hashMap = array[i]
+            val mutableMap = array[i]
 
             // Check Event for the given time-range to Push-Notification
-            if ((hashMap[EnumEvent.END]?.toLongOrNull() ?: 0) >= currentTime &&
-                (((hashMap[EnumEvent.START]?.toLongOrNull() ?: 0) - (range * multiplicator)) <= currentTime)
+            if ((mutableMap[EnumEvent.END]?.toLongOrNull() ?: 0) >= currentTime &&
+                (((mutableMap[EnumEvent.START]?.toLongOrNull() ?: 0) - (range * multiplicator)) <= currentTime)
             ) {
-                val eventStartAsHashMap = time.dateFormatToHumanTime(hashMap[EnumEvent.START]?.toLongOrNull() ?: 0)
+                val eventStartAsHashMap = time.dateFormatToHumanTime(mutableMap[EnumEvent.START]?.toLongOrNull() ?: 0)
 
-                notificationHashMap[EnumEventNotification.TITLE] = hashMap[EnumEvent.TITLE].toString()
-                notificationHashMap[EnumEventNotification.CONTENT] = GLOBAL_NULL
-                notificationHashMap[EnumEventNotification.YEAR] = eventStartAsHashMap[EnumTime.YEAR].toString()
-                notificationHashMap[EnumEventNotification.MONTH] = eventStartAsHashMap[EnumTime.MONTH].toString()
-                notificationHashMap[EnumEventNotification.DAY] = eventStartAsHashMap[EnumTime.DAY].toString()
-                notificationHashMap[EnumEventNotification.WEEKDAY] = eventStartAsHashMap[EnumTime.WEEKDAY].toString()
-                notificationHashMap[EnumEventNotification.HOUR] = eventStartAsHashMap[EnumTime.HOUR].toString()
-                notificationHashMap[EnumEventNotification.MINUTE] = eventStartAsHashMap[EnumTime.MINUTE].toString()
-                notificationHashMap[EnumEventNotification.LINK] = hashMap[EnumEvent.LINK].toString()
-                notificationHashMap[EnumEventNotification.FLAG] = hashMap[EnumEvent.FLAG].toString()
+                notificationHashMap[EnumEventNotification.TITLE]    = mutableMap[EnumEvent.TITLE].toString()
+                notificationHashMap[EnumEventNotification.CONTENT]  = GLOBAL_NULL
+                notificationHashMap[EnumEventNotification.YEAR]     = eventStartAsHashMap[EnumTime.YEAR].toString()
+                notificationHashMap[EnumEventNotification.MONTH]    = eventStartAsHashMap[EnumTime.MONTH].toString()
+                notificationHashMap[EnumEventNotification.DAY]      = eventStartAsHashMap[EnumTime.DAY].toString()
+                notificationHashMap[EnumEventNotification.WEEKDAY]  = eventStartAsHashMap[EnumTime.WEEKDAY].toString()
+                notificationHashMap[EnumEventNotification.HOUR]     = eventStartAsHashMap[EnumTime.HOUR].toString()
+                notificationHashMap[EnumEventNotification.MINUTE]   = eventStartAsHashMap[EnumTime.MINUTE].toString()
+                notificationHashMap[EnumEventNotification.LINK]     = mutableMap[EnumEvent.LINK].toString()
+                notificationHashMap[EnumEventNotification.FLAG]     = mutableMap[EnumEvent.FLAG].toString()
 
                 if (debug) {
                     Log.d(
                         DEBUG_EVENT,
-                        "Next Event is: \"${hashMap[EnumEvent.TITLE].toString()}\" Current Unix Time: \"${time.getUnixTime()}\" Next Events end time: \"${hashMap[EnumEvent.END].toString()}\" \n \n"
+                        "Next Event is: \"${mutableMap[EnumEvent.TITLE].toString()}\" Current Unix Time: \"${time.getUnixTime()}\" Next Events end time: \"${mutableMap[EnumEvent.END].toString()}\" \n \n"
                     )
                 }
             }

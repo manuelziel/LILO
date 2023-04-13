@@ -49,10 +49,10 @@ class ArticleUpdateDB(val context: Context) {
     /**
      * Set one Article with new Value
      *
-     * @param article as HashMap with EnumArticles<String>
+     * @param article as MutableMap with EnumArticles<String>
      **/
     fun setArticle(
-        article: HashMap<EnumArticle, String>
+        article: MutableMap<EnumArticle, String>
     ) {
         val values = ContentValues()
         values.put(COLUMN_ARTICLE_TITLE, article[EnumArticle.TITLE])

@@ -70,10 +70,10 @@ class BackgroundNotification(
         // Create a notification channel.
         createNotificationChannel()
 
-        val connection = Connection(context)
+        val connection  = Connection(context)
         val preferences = Preferences(context)
-        val events = Events(context)
-        val articles = Articles(context)
+        val events      = Events(context)
+        val articles    = Articles(context)
 
         // Check if the user has enabled push notifications and if the server connection is available.
         if (connection.connectionToServer() && preferences.getUserPrivacyPolicy()) {
@@ -129,10 +129,10 @@ class BackgroundNotification(
     /**
      * Function for the Event Push-Notification.
      *
-     * @param event as HashMap<EnumEventNotification, String>
+     * @param event as MutableMap<EnumEventNotification, String>
      **/
     private fun newEventNotification(
-        event: HashMap<EnumEventNotification, String>
+        event: MutableMap<EnumEventNotification, String>
     ) {
         // The Link for opening the Organisation contribution-page
         //val link = "https://www.linke-liste-ortenau.de/kontakt/"
@@ -210,10 +210,10 @@ class BackgroundNotification(
     /**
      * Function for the Article Push-Notification.
      *
-     * @param article as HashMap<EnumArticles, String>
+     * @param article as MutableMap<EnumArticles, String>
      **/
     private fun newArticleNotification(
-        article: HashMap<EnumArticle, String>
+        article: MutableMap<EnumArticle, String>
     ) {
         // The Link for opening the Organisation contribution-page
         //val link = "https://www.linke-liste-ortenau.de/kontakt/"
@@ -245,11 +245,11 @@ class BackgroundNotification(
         newArticleNotification = NotificationCompat.Builder(context, channelId)
 
             // adding notification Title
-            //.setContentTitle(articlesAsHashMap[EnumArticle.TITLE])
+            //.setContentTitle(articlesAsMutableMap[EnumArticle.TITLE])
             //.setContentTitle(context.getString(R.string.notification_article_new_title))
 
             // adding notification Text
-            //.setContentText(articlesAsHashMap[EnumArticle.CONTENT])
+            //.setContentText(articlesAsMutableMap[EnumArticle.CONTENT])
             .setContentText(article[EnumArticle.TITLE])
 
             // adding notification SmallIcon
@@ -307,7 +307,7 @@ class BackgroundNotification(
      * Push all Notifications in a Group
      */
     private fun notificationManager(
-        event: HashMap<EnumEventNotification, String>, article: HashMap<EnumArticle, String>, userShowEventsNotification: Boolean, userShowArticlesNotification: Boolean
+        event: MutableMap<EnumEventNotification, String>, article: MutableMap<EnumArticle, String>, userShowEventsNotification: Boolean, userShowArticlesNotification: Boolean
     ) {
         //val summary = 0
 

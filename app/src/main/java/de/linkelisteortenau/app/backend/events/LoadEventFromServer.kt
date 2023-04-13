@@ -9,7 +9,7 @@ package de.linkelisteortenau.app.backend.events
 import android.content.Context
 import android.util.Log
 import de.linkelisteortenau.app.TIME_MINUTE
-import de.linkelisteortenau.app.TIME_PATTER_GLOBAL
+import de.linkelisteortenau.app.TIME_FORMAT_GLOBAL
 import de.linkelisteortenau.app.WEB_VIEW_URL_EVENTS
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_LOAD_TEST_LINK
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_LOAD_TEST_TITLE
@@ -26,6 +26,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
+import java.util.EnumMap
 
 /**
  * Class to load Events from the Web Server
@@ -72,18 +73,17 @@ class LoadEventFromServer(
     private fun loadEventsFunction() {
         try {
             val doc: Document = Jsoup.connect(WEB_VIEW_URL_EVENTS).timeout(0).get()
-            val hashMap: HashMap<EnumEvent, String> = HashMap<EnumEvent, String>()
+            val mutableMap: MutableMap<EnumEvent, String> = EnumMap(EnumEvent::class.java)
 
             if (doc.hasText()) {
-                hashMap[EnumEvent.FLAG] = false.toString()
-                Events(context).setAllEventFlags(hashMap) // Set all DB Event flags to false
+                mutableMap[EnumEvent.FLAG] = false.toString()
+                Events(context).setAllEventFlags(mutableMap) // Set all DB Event flags to false
                 val eContent: Elements = doc.select("div.entry-content ul li")
                 val eHref: Elements = eContent.select("a[href]")
                 var cnt = 0
 
                 if (eHref.hasText()) {
                     for (i in eHref) {
-                        val hashMap: HashMap<EnumEvent, String> = HashMap<EnumEvent, String>()
 
                         // Get the Link
                         val eventLink = i.toString().substringAfter("href=\"").substringBefore("\">")
@@ -103,36 +103,36 @@ class LoadEventFromServer(
                         val eventStart = eTime.toString().substringAfter("<time itemprop=\"startDate\" datetime=\"").substringBefore("\">")
                         val eventEnd = eTime.toString().substringAfter("<time itemprop=\"endDate\" datetime=\"").substringBefore("\">")
 
-                        hashMap[EnumEvent.TITLE] = eventTitle
-                        hashMap[EnumEvent.LINK] = eventLink
-                        hashMap[EnumEvent.START] = eventStart
-                        hashMap[EnumEvent.END] = eventEnd
-                        hashMap[EnumEvent.CONTENT] = eventContent
-                        hashMap[EnumEvent.FLAG] = true.toString()
-                        hashMap[EnumEvent.PATTER] = TIME_PATTER_GLOBAL
+                        mutableMap[EnumEvent.TITLE]     = eventTitle
+                        mutableMap[EnumEvent.LINK]      = eventLink
+                        mutableMap[EnumEvent.START]     = eventStart
+                        mutableMap[EnumEvent.END]       = eventEnd
+                        mutableMap[EnumEvent.CONTENT]   = eventContent
+                        mutableMap[EnumEvent.FLAG]      = true.toString()
+                        mutableMap[EnumEvent.PATTER]    = TIME_FORMAT_GLOBAL
 
                         cnt++
                         if ((cnt == 1) && (debug)) {
-                            val debugHashMap: HashMap<EnumEvent, String> = HashMap<EnumEvent, String>()
+                            val debugMutableMap: MutableMap<EnumEvent, String> = EnumMap(EnumEvent::class.java)
                             val debugEventStart = Time(context).getDateFormat((Time(context).getUnixTime()) + TIME_MINUTE * 2)
                             val debugEventEnd = Time(context).getDateFormat((Time(context).getUnixTime()) + TIME_MINUTE * 5)
 
-                            debugHashMap[EnumEvent.TITLE] = DEBUG_EVENT_LOAD_TEST_TITLE
-                            debugHashMap[EnumEvent.LINK] = DEBUG_EVENT_LOAD_TEST_LINK
-                            debugHashMap[EnumEvent.START] = debugEventStart
-                            debugHashMap[EnumEvent.END] = debugEventEnd
-                            debugHashMap[EnumEvent.CONTENT] = eventContent
-                            debugHashMap[EnumEvent.FLAG] = true.toString()
-                            debugHashMap[EnumEvent.PATTER] = TIME_PATTER_GLOBAL
+                            debugMutableMap[EnumEvent.TITLE]    = DEBUG_EVENT_LOAD_TEST_TITLE
+                            debugMutableMap[EnumEvent.LINK]     = DEBUG_EVENT_LOAD_TEST_LINK
+                            debugMutableMap[EnumEvent.START]    = debugEventStart
+                            debugMutableMap[EnumEvent.END]      = debugEventEnd
+                            debugMutableMap[EnumEvent.CONTENT]  = eventContent
+                            debugMutableMap[EnumEvent.FLAG]     = true.toString()
+                            debugMutableMap[EnumEvent.PATTER]   = TIME_FORMAT_GLOBAL
 
-                            Events(context).saveEvent(debugHashMap)
+                            Events(context).saveEvent(debugMutableMap)
                         }
 
                         if (debug) {
                             Log.d(DEBUG_LOAD_EVENT, "Incoming ${eHref.size} Events $cnt is: $eventTitle from $eventStart to $eventEnd with link $eventLink \n")
                         }
 
-                        Events(context).saveEvent(hashMap)
+                        Events(context).saveEvent(mutableMap)
 
                         //if (cnt == eHref.size) {
                             // Code here if end loop reached
@@ -166,38 +166,38 @@ class LoadEventFromServer(
 
             for (i in 0..lenght) {
                 cnt++
-                val hashMap: HashMap<EnumEvent, String> = HashMap<EnumEvent, String>()
+                val mutableMap: MutableMap<EnumEvent, String> = EnumMap(EnumEvent::class.java)
                 val obj = array.getJSONObject(i)
 
-                hashMap[EnumEvent.TITLE] = obj.get("name").toString()
-                hashMap[EnumEvent.START] = obj.get("startDate").toString()
-                hashMap[EnumEvent.END] = obj.get("endDate").toString()
-                hashMap[EnumEvent.LINK] = obj.get("url").toString()
-                hashMap[EnumEvent.CONTENT] = eventContent
-                hashMap[EnumEvent.FLAG] = false.toString()
-                hashMap[EnumEvent.PATTER] = TIME_PATTER_GLOBAL
+                mutableMap[EnumEvent.TITLE]     = obj.get("name").toString()
+                mutableMap[EnumEvent.START]     = obj.get("startDate").toString()
+                mutableMap[EnumEvent.END]       = obj.get("endDate").toString()
+                mutableMap[EnumEvent.LINK]      = obj.get("url").toString()
+                mutableMap[EnumEvent.CONTENT]   = eventContent
+                mutableMap[EnumEvent.FLAG]      = false.toString()
+                mutableMap[EnumEvent.PATTER]    = TIME_FORMAT_GLOBAL
 
                 // Set all Event Flags and Save Event
-                Events(context).setAllEventFlags(hashMap) // Set all DB Event flags to false
-                Events(context).saveEvent(hashMap)
+                Events(context).setAllEventFlags(mutableMap) // Set all DB Event flags to false
+                Events(context).saveEvent(mutableMap)
 
                 if ((cnt == 1) && (debug)) {
-                    val debugHashMap: HashMap<EnumEvent, String> = HashMap<EnumEvent, String>()
+                    val debugMutableMap: MutableMap<EnumEvent, String> = EnumMap(EnumEvent::class.java)
                     val debugEventStart = Time(context).getDateFormat((Time(context).getUnixTime()) + TIME_MINUTE * 2)
                     val debugEventEnd = Time(context).getDateFormat((Time(context).getUnixTime()) + TIME_MINUTE * 5)
 
-                    debugHashMap[EnumEvent.TITLE] = DEBUG_EVENT_LOAD_TEST_TITLE
-                    debugHashMap[EnumEvent.LINK] = DEBUG_EVENT_LOAD_TEST_LINK
-                    debugHashMap[EnumEvent.START] = debugEventStart
-                    debugHashMap[EnumEvent.END] = debugEventEnd
-                    debugHashMap[EnumEvent.CONTENT] = eventContent
-                    debugHashMap[EnumEvent.PATTER] = TIME_PATTER_GLOBAL
+                    debugMutableMap[EnumEvent.TITLE] = DEBUG_EVENT_LOAD_TEST_TITLE
+                    debugMutableMap[EnumEvent.LINK] = DEBUG_EVENT_LOAD_TEST_LINK
+                    debugMutableMap[EnumEvent.START] = debugEventStart
+                    debugMutableMap[EnumEvent.END] = debugEventEnd
+                    debugMutableMap[EnumEvent.CONTENT] = eventContent
+                    debugMutableMap[EnumEvent.PATTER] = TIME_FORMAT_GLOBAL
 
-                    Events(context).saveEvent(debugHashMap)
+                    Events(context).saveEvent(debugMutableMap)
                 }
 
                 if (debug) {
-                    Log.d(DEBUG_LOAD_EVENT, "Incoming Event $i is: ${hashMap[EnumEvent.TITLE]} from ${hashMap[EnumEvent.START]} to ${hashMap[EnumEvent.END]} with link ${hashMap[EnumEvent.LINK]} \n")
+                    Log.d(DEBUG_LOAD_EVENT, "Incoming Event $i is: ${mutableMap[EnumEvent.TITLE]} from ${mutableMap[EnumEvent.START]} to ${mutableMap[EnumEvent.END]} with link ${mutableMap[EnumEvent.LINK]} \n")
                 }
             }
         } catch (e: IOException) {

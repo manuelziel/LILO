@@ -61,13 +61,13 @@ class RecyclerEventContentAdapter(private val onClick: (DataEvents) -> Unit) :
         ) {
             currentEvent = event
 
-            eventTextTitle.text = event.title
-            eventTextWeekday.text = event.weekday
-            eventTextDay.text = event.date
+            eventTextTitle.text     = event.title
+            eventTextWeekday.text   = event.weekday
+            eventTextDay.text       = event.date
             //eventTextStartText.text = context.getString(R.string.event_recycler_event_start_text)
             eventTextStartTime.text = event.start
             //eventTextEndText.text = context.getString(R.string.event_recycler_event_end_text)
-            eventTextEndTime.text = event.end
+            eventTextEndTime.text   = event.end
         }
     }
 

@@ -22,13 +22,13 @@ const val HOST_URL_ORGANISATION = "www.linke-liste-ortenau.de"
  **/
 //const val TIME_HOUR = 3600000
 const val TIME_MINUTE = 60000
-const val TIME_PATTER_GLOBAL = "yyyy-MM-dd'T'HH:mm:ssXXX"
-const val TIME_PATTER_YEAR = "yyyy"
-const val TIME_PATTER_MONTH = "MMM"
-const val TIME_PATTER_DAY = "dd"
-const val TIME_PATTER_WEEKDAY = "EEEE"
-const val TIME_PATTER_HOUR = "HH"
-const val TIME_PATTER_MINUTE = "mm"
+const val TIME_FORMAT_GLOBAL = "yyyy-MM-dd'T'HH:mm:ssXXX"
+const val TIME_FORMAT_YEAR = "yyyy"
+const val TIME_FORMAT_MONTH = "MMM"
+const val TIME_FORMAT_DAY = "dd"
+const val TIME_FORMAT_WEEKDAY = "EEEE"
+const val TIME_FORMAT_HOUR = "HH"
+const val TIME_FORMAT_MINUTE = "mm"
 
 /**
  * Constants for global Preferences

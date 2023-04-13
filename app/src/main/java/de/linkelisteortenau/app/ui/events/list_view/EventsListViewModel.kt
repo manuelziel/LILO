@@ -25,13 +25,13 @@ class EventsListViewModel(val dataSource: DataSource) : ViewModel() {
      * If the name and description are present, create new event and add it to the datasource.
      *
      * @param eventTitle as String from the Event
-     * @param eventStartTimeAsHashMap as HashMap with Year, Month, Day, Weekday, Hour and Minute
-     * @param eventEndTimeAsHashMap as HashMap with Year, Month, Day, Weekday, Hour and Minute
+     * @param eventStartTimeAsHashMap as MutableMap with Year, Month, Day, Weekday, Hour and Minute
+     * @param eventEndTimeAsHashMap as MutableMap with Year, Month, Day, Weekday, Hour and Minute
      **/
     fun insertEvent(
         eventTitle: String?,
-        eventStartTimeAsHashMap: HashMap<EnumTime, String>,
-        eventEndTimeAsHashMap: HashMap<EnumTime, String>,
+        eventStartTimeAsHashMap: MutableMap<EnumTime, String>,
+        eventEndTimeAsHashMap: MutableMap<EnumTime, String>,
         eventLink: String?
     ) {
         if (eventTitle == null || eventLink == null) {

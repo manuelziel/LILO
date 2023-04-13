@@ -15,6 +15,7 @@ import de.linkelisteortenau.app.backend.debug.DEBUG_SQL_EVENT_GET_EMPTY
 import de.linkelisteortenau.app.backend.events.EnumEvent
 import de.linkelisteortenau.app.backend.preferences.Preferences
 import de.linkelisteortenau.app.backend.sql.*
+import java.util.EnumMap
 
 /**
  * Class to get things from the Event SQL-Database
@@ -31,8 +32,8 @@ class EventGetDB(val context: Context) {
      *
      * @return ArrayList as String
      **/
-    fun readData(): ArrayList<HashMap<EnumEvent, String>> {
-        val array = ArrayList<HashMap<EnumEvent, String>>()
+    fun readData(): ArrayList<MutableMap<EnumEvent, String>> {
+        val array = ArrayList<MutableMap<EnumEvent, String>>()
 
         val query = buildString {
             append("SELECT * FROM ")
@@ -49,18 +50,18 @@ class EventGetDB(val context: Context) {
         }
 
         while (cursor.moveToNext()) {
-            val hashMap: HashMap<EnumEvent, String> = HashMap<EnumEvent, String>()
-            hashMap[EnumEvent.TITLE] = cursor.getString(event_title_index)
-            hashMap[EnumEvent.START] = cursor.getString(event_start_index)
-            hashMap[EnumEvent.END] = cursor.getString(event_end_index)
-            hashMap[EnumEvent.LINK] = cursor.getString(event_link_index)
-            hashMap[EnumEvent.CONTENT] = cursor.getString(event_content_index)
-            hashMap[EnumEvent.FLAG] = cursor.getString(event_flag_index)
+            val mutableMap: MutableMap<EnumEvent, String> = EnumMap<EnumEvent, String>(EnumEvent::class.java)
+            mutableMap[EnumEvent.TITLE] = cursor.getString(event_title_index)
+            mutableMap[EnumEvent.START] = cursor.getString(event_start_index)
+            mutableMap[EnumEvent.END] = cursor.getString(event_end_index)
+            mutableMap[EnumEvent.LINK] = cursor.getString(event_link_index)
+            mutableMap[EnumEvent.CONTENT] = cursor.getString(event_content_index)
+            mutableMap[EnumEvent.FLAG] = cursor.getString(event_flag_index)
 
-            array.add(hashMap)
+            array.add(mutableMap)
 
             if (debug) {
-                Log.d(DEBUG_SQL_EVENT_GET, "Event from DB: \"$hashMap\"")
+                Log.d(DEBUG_SQL_EVENT_GET, "Event from DB: \"$mutableMap\"")
             }
         }
 
@@ -76,10 +77,10 @@ class EventGetDB(val context: Context) {
     /**
      * Query data from Event SQL-Database and return boolean true if query something
      *
-     * @param event as HashMap with EnumEvent<String>
+     * @param event as MutableMap with EnumEvent<String>
      **/
     fun queryData(
-        event: HashMap<EnumEvent, String>
+        event: MutableMap<EnumEvent, String>
     ): Boolean {
         val debug = Preferences(context).getSystemDebug()
         val dbHelper = EventDBHelper(context)

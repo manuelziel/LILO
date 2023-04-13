@@ -28,10 +28,10 @@ class EventInsertDB(val context: Context) {
     /**
      * Write events and this Content to Database
      *
-     * @param event as HashMap EnumEvent<String>
+     * @param event as MutableMap EnumEvent<String>
      **/
     fun insertEvent(
-        event: HashMap<EnumEvent, String>
+        event: MutableMap<EnumEvent, String>
     ) {
         val values = ContentValues()
         values.put(COLUMN_EVENT_TITLE, event[EnumEvent.TITLE])

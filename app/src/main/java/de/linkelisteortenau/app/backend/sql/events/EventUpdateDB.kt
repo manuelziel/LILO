@@ -29,10 +29,10 @@ class EventUpdateDB(val context: Context) {
     /**
      * Set all event Flags to new Value
      *
-     * @param event as HashMap with EnumEvent<String>
+     * @param event as MutableMap with EnumEvent<String>
      **/
     fun setAllEventFlags(
-        event: HashMap<EnumEvent, String>
+        event: MutableMap<EnumEvent, String>
     ) {
         val result = db.execSQL("UPDATE $EVENTS_TABLE_NAME SET $COLUMN_EVENT_FLAG='flag', $COLUMN_EVENT_FLAG='${event[EnumEvent.FLAG]}' ")
         db.close()
@@ -47,10 +47,10 @@ class EventUpdateDB(val context: Context) {
     /**
      * Set one Event Flag to new Value
      *
-     * @param event as HashMap with EnumEvent<String>
+     * @param event as MutableMap with EnumEvent<String>
      **/
     fun setEventFlag(
-        event: HashMap<EnumEvent, String>
+        event: MutableMap<EnumEvent, String>
     ) {
         val values = ContentValues()
         values.put(COLUMN_EVENT_FLAG, event[EnumEvent.FLAG])

@@ -22,6 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
+import java.util.*
 
 /**
  * Class to load Articles from the Web Server
@@ -69,21 +70,21 @@ class LoadArticlesFromServer(val context: Context) {
             val doc: Document = Jsoup.connect("$WEB_VIEW_HTTP_SCHEM$HOST_URL_ORGANISATION").timeout(0).get()
 
             if (doc.hasText()) {
-                val hashMap: HashMap<EnumArticle, String> = HashMap<EnumArticle, String>()
+                val mutableMap: MutableMap<EnumArticle, String> = EnumMap(EnumArticle::class.java)
                 val eArticles: Elements = doc.select("div.entry-container h2")
                 val eLinks: MutableList<String> = eArticles.select("a[href]").eachAttr("href")
 
                 eArticles.forEachIndexed { index, element ->
-                    hashMap[EnumArticle.TITLE] = element.text()
-                    hashMap[EnumArticle.CONTENT] = GLOBAL_NULL
-                    hashMap[EnumArticle.LINK] = eLinks[index]
-                    hashMap[EnumArticle.FLAG] = true.toString()
+                    mutableMap[EnumArticle.TITLE]   = element.text()
+                    mutableMap[EnumArticle.CONTENT] = GLOBAL_NULL
+                    mutableMap[EnumArticle.LINK]    = eLinks[index]
+                    mutableMap[EnumArticle.FLAG]    = true.toString()
 
                     if (debug) {
                         Log.d(DEBUG_LOAD_ARTICLE, "Incoming Article: ${element.text()} with link ${eLinks[index]}")
                     }
 
-                    Articles(context).saveArticles(hashMap)
+                    Articles(context).saveArticles(mutableMap)
                 }
 
                 // Show new Notifications

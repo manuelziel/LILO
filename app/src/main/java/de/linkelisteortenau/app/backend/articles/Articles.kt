@@ -6,6 +6,7 @@ import android.util.Log
 import de.linkelisteortenau.app.backend.debug.DEBUG_ARTICLE
 import de.linkelisteortenau.app.backend.preferences.Preferences
 import de.linkelisteortenau.app.backend.sql.articles.*
+import java.util.*
 
 /**
  * @author Manuel Ziel
@@ -45,12 +46,12 @@ class Articles(
         deleteDuplicates()
 
         if (debug) {
-            val array: ArrayList<HashMap<EnumArticle, String>> = getArticles()
+            val array: ArrayList<MutableMap<EnumArticle, String>> = getArticles()
 
             for (i in 0 until array.size) {
-                val hashMap = array[i]
+                val mutableMap = array[i]
 
-                Log.d(DEBUG_ARTICLE, "Check Articles $i with \"${hashMap[EnumArticle.TITLE].toString()}\" has flag: \"${hashMap[EnumArticle.FLAG].toString()}\"")
+                Log.d(DEBUG_ARTICLE, "Check Articles $i with \"${mutableMap[EnumArticle.TITLE].toString()}\" has flag: \"${mutableMap[EnumArticle.FLAG].toString()}\"")
             }
             Log.d(DEBUG_ARTICLE, "\n\n")
         }
@@ -59,10 +60,10 @@ class Articles(
     /**
      * Save and query the Article
      *
-     * @param article as HashMap with EnumArticles<String>
+     * @param article as MutableMap with EnumArticles<String>
      **/
     fun saveArticles(
-        article: HashMap<EnumArticle, String>
+        article: MutableMap<EnumArticle, String>
     ) {
         // Query Article with the Title and Link
         val queryArticle = getQueryArticle(article)
@@ -116,10 +117,10 @@ class Articles(
     /**
      * Save the new Article
      *
-     * @param article as HashMap with EnumArticles<String>
+     * @param article as MutableMap with EnumArticles<String>
      **/
     private fun setArticle(
-        article: HashMap<EnumArticle, String>
+        article: MutableMap<EnumArticle, String>
     ) {
         articleInsertDB.insertArticle(article)
         db.close()
@@ -141,11 +142,11 @@ class Articles(
      * Find Article in the SQL-Database as Boolean.
      * Search with Title and Link.
      *
-     * @param article as HashMap<EnumArticle, String>
+     * @param article as MutableMap<EnumArticle, String>
      * @return Boolean that find a Query
      **/
     private fun getQueryArticle(
-        article: HashMap<EnumArticle, String>
+        article: MutableMap<EnumArticle, String>
     ): Boolean {
         val queryData = articleGetDB.queryData(article)
         db.close()
@@ -154,11 +155,11 @@ class Articles(
     }
 
     /**
-     * Get all saved Article from SQL-Database as HashMap<String>
+     * Get all saved Article from SQL-Database as MutableMap<String>
      *
-     * @return Array with HashMap with EnumArticles<String>
+     * @return Array with MutableMap with EnumArticles<String>
      **/
-    private fun getArticles(): ArrayList<HashMap<EnumArticle, String>> {
+    private fun getArticles(): ArrayList<MutableMap<EnumArticle, String>> {
         val readData = articleGetDB.readData()
         db.close()
 
@@ -166,14 +167,14 @@ class Articles(
     }
 
     /**
-     * Get one saved flagged Article from SQL-Database as HashMap<String>
+     * Get one saved flagged Article from SQL-Database as MutableMap<String>
      *
      * @param flag as Boolean for the Articles with this Flag
-     * @return Array with HashMap with EnumArticles<String>
+     * @return Array with MutableMap with EnumArticles<String>
      **/
     private fun getFlaggedArticles(
         flag: Boolean
-    ): ArrayList<HashMap<EnumArticle, String>> {
+    ): ArrayList<MutableMap<EnumArticle, String>> {
         val flaggedArticles = articleGetDB.queryFlaggedArticles(flag)
         db.close()
 
@@ -201,22 +202,22 @@ class Articles(
     /**
      * Get the new Article from SQL.
      *
-     * return as HashMap with EnumArticles as String
+     * return as MutableMap with EnumArticles as String
      **/
-    fun getNotification(): HashMap<EnumArticle, String> {
-        val returnHashMap = HashMap<EnumArticle, String>()
+    fun getNotification(): MutableMap<EnumArticle, String> {
+        val returnMutableMap: MutableMap<EnumArticle, String> = EnumMap(EnumArticle::class.java)
         val arrayTrue = getFlaggedArticles(true)
-        val arrayFalse = getFlaggedArticles(false)
+        //val arrayFalse = getFlaggedArticles(false)
 
         for (i in 0 until arrayTrue.size) {
-            val hashMap = arrayTrue[i]
+            val map = arrayTrue[i]
 
-            if (hashMap[EnumArticle.FLAG].toBoolean()) {
-                returnHashMap.apply {
-                    put(EnumArticle.TITLE, hashMap[EnumArticle.TITLE].toString())
-                    put(EnumArticle.CONTENT, hashMap[EnumArticle.CONTENT].toString())
-                    put(EnumArticle.LINK, hashMap[EnumArticle.LINK].toString())
-                    put(EnumArticle.FLAG, hashMap[EnumArticle.FLAG].toString())
+            if (map[EnumArticle.FLAG].toBoolean()) {
+                returnMutableMap.apply {
+                    put(EnumArticle.TITLE, map[EnumArticle.TITLE].toString())
+                    put(EnumArticle.CONTENT, map[EnumArticle.CONTENT].toString())
+                    put(EnumArticle.LINK, map[EnumArticle.LINK].toString())
+                    put(EnumArticle.FLAG, map[EnumArticle.FLAG].toString())
                 }
 
                 /* Delete all old Articles with the Flag false after that set the new Articles to the Flag false
@@ -230,7 +231,7 @@ class Articles(
                 break
             }
         }
-        return returnHashMap
+        return returnMutableMap
     }
 
     /**

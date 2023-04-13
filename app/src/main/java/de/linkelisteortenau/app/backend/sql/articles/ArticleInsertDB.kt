@@ -32,7 +32,7 @@ class ArticleInsertDB(val context: Context) {
      * @param article as HashMap with EnumArticles<String>
      **/
     fun insertArticle(
-        article: HashMap<EnumArticle, String>
+        article: MutableMap<EnumArticle, String>
     ): Boolean {
         val values = ContentValues()
         values.put(COLUMN_ARTICLE_TITLE, article[EnumArticle.TITLE])

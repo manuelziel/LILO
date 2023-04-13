@@ -16,6 +16,7 @@ import de.linkelisteortenau.app.backend.debug.DEBUG_SQL_ARTICLE_GET_DB
 import de.linkelisteortenau.app.backend.debug.DEBUG_SQL_ARTICLE_GET_EMPTY
 import de.linkelisteortenau.app.backend.debug.DEBUG_SQL_ARTICLE_GET_FLAGGED_DB
 import de.linkelisteortenau.app.backend.preferences.Preferences
+import java.util.EnumMap
 
 /**
  * Class to get things from the Article SQL-Database
@@ -34,8 +35,8 @@ class ArticleGetDB(
      *
      * @return HashMap as EnumArticle<String>
      **/
-    fun readData(): ArrayList<HashMap<EnumArticle, String>> {
-        val array = ArrayList<HashMap<EnumArticle, String>>()
+    fun readData(): ArrayList<MutableMap<EnumArticle, String>> {
+        val array = ArrayList<MutableMap<EnumArticle, String>>()
 
         val query = buildString {
             append("SELECT * FROM ")
@@ -49,16 +50,16 @@ class ArticleGetDB(
         }
 
         while (cursor.moveToNext()) {
-            val hashMap: HashMap<EnumArticle, String> = HashMap<EnumArticle, String>()
-            hashMap[EnumArticle.TITLE] = cursor.getString(article_title_index)
-            hashMap[EnumArticle.LINK] = cursor.getString(article_link_index)
-            hashMap[EnumArticle.CONTENT] = cursor.getString(article_content_index)
-            hashMap[EnumArticle.FLAG] = cursor.getString(article_flag_index)
+            val mutableMap: MutableMap<EnumArticle, String> = EnumMap(EnumArticle::class.java)
+            mutableMap[EnumArticle.TITLE] = cursor.getString(article_title_index)
+            mutableMap[EnumArticle.LINK] = cursor.getString(article_link_index)
+            mutableMap[EnumArticle.CONTENT] = cursor.getString(article_content_index)
+            mutableMap[EnumArticle.FLAG] = cursor.getString(article_flag_index)
 
-            array.add(hashMap)
+            array.add(mutableMap)
 
             if (debug) {
-                Log.d(DEBUG_SQL_ARTICLE_GET, DEBUG_SQL_ARTICLE_GET_DB + "\"$hashMap\"")
+                Log.d(DEBUG_SQL_ARTICLE_GET, DEBUG_SQL_ARTICLE_GET_DB + "\"$mutableMap\"")
             }
         }
         cursor.close()
@@ -77,8 +78,8 @@ class ArticleGetDB(
      **/
     fun queryFlaggedArticles(
         flag: Boolean
-    ): ArrayList<HashMap<EnumArticle, String>> {
-        val array = ArrayList<HashMap<EnumArticle, String>>()
+    ): ArrayList<MutableMap<EnumArticle, String>> {
+        val array = ArrayList<MutableMap<EnumArticle, String>>()
 
         val query = buildString {
             append("SELECT * FROM ")
@@ -98,16 +99,16 @@ class ArticleGetDB(
         }
 
         while (cursor.moveToNext()) {
-            val hashMap: HashMap<EnumArticle, String> = HashMap<EnumArticle, String>()
-            hashMap[EnumArticle.TITLE] = cursor.getString(article_title_index)
-            hashMap[EnumArticle.LINK] = cursor.getString(article_link_index)
-            hashMap[EnumArticle.CONTENT] = cursor.getString(article_content_index)
-            hashMap[EnumArticle.FLAG] = cursor.getString(article_flag_index)
+            val mutableMap: MutableMap<EnumArticle, String> = EnumMap(EnumArticle::class.java)
+            mutableMap[EnumArticle.TITLE] = cursor.getString(article_title_index)
+            mutableMap[EnumArticle.LINK] = cursor.getString(article_link_index)
+            mutableMap[EnumArticle.CONTENT] = cursor.getString(article_content_index)
+            mutableMap[EnumArticle.FLAG] = cursor.getString(article_flag_index)
 
-            array.add(hashMap)
+            array.add(mutableMap)
 
             if (debug) {
-                Log.d(DEBUG_SQL_ARTICLE_GET, DEBUG_SQL_ARTICLE_GET_FLAGGED_DB + "\"$hashMap\"")
+                Log.d(DEBUG_SQL_ARTICLE_GET, DEBUG_SQL_ARTICLE_GET_FLAGGED_DB + "\"$mutableMap\"")
             }
         }
         cursor.close()
@@ -122,7 +123,7 @@ class ArticleGetDB(
      * @return Boolean
      **/
     fun queryData(
-        article: HashMap<EnumArticle, String>
+        article: MutableMap<EnumArticle, String>
     ): Boolean {
         val query = buildString {
             append("SELECT * FROM ")
