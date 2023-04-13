@@ -26,7 +26,9 @@ import de.linkelisteortenau.app.databinding.FragmentSearchBinding
 /**
  * Class for the Brain WebView Content
  **/
-class WebViewSearch(val context: Context) {
+class WebViewSearch(
+    val context: Context
+    ) {
 
     /**
      * Function to check Network Capabilities
