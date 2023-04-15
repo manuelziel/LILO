@@ -94,15 +94,16 @@ const val WEB_VIEW_URL_SOCIAL = "$WEB_VIEW_HTTP_SCHEM$HOST_URL_ORGANISATION/sozi
 const val WEB_VIEW_URL_TRAINING = "$WEB_VIEW_HTTP_SCHEM$HOST_URL_ORGANISATION/bildung/"
 const val WEB_VIEW_URL_PRIVACY_POLICY = "$WEB_VIEW_HTTP_SCHEM$HOST_URL_ORGANISATION/datenschutzerklaerung/"
 
-//const val WEB_VIEW_JAVASCRIPT_REMOVE_COOKIE_NOTICE = "javascript:(function() { var cookieNotice = document.getElementsByClassName('cookie-notice-container')[0].style.display='none'; })()"
-//const val WEB_VIEW_JAVASCRIPT_REMOVE_HEADER = "javascript:(function() { var header = document.getElementsByClassName('wrapper')[0].style.display='none'; })()"
-//const val WEB_VIEW_JAVASCRIPT_REMOVE_HEADER_FEATURED_IMAGE = "javascript:(function() { var headerImage = document.getElementsByClassName('wp-post-image')[0].style.display='none'; })()"
-//const val WEB_VIEW_JAVASCRIPT_REMOVE_SIDEBAR = "javascript:(function() { var sidebar = document.getElementsByClassName('sidebar sidebar-primary widget-area')[0].style.display='none'; })()"
-//const val WEB_VIEW_JAVASCRIPT_REMOVE_FOOTER = "javascript:(function() { var footer = document.getElementsByClassName('site-footer')[0].style.display='none'; })()"
+const val WEB_VIEW_JAVASCRIPT_REMOVE_COOKIE_NOTICE = "var cookieNotice = document.getElementsByClassName('cookie-notice-container')[0].style.display='none';"
+const val WEB_VIEW_JAVASCRIPT_REMOVE_HEADER = "var header = document.getElementsByClassName('wrapper')[0].style.display='none';"
+const val WEB_VIEW_JAVASCRIPT_REMOVE_HEADER_FEATURED_IMAGE = "var headerImage = document.getElementsByClassName('wp-post-image')[0].style.display='none';"
+const val WEB_VIEW_JAVASCRIPT_REMOVE_SIDEBAR = "var sidebar = document.getElementsByClassName('sidebar sidebar-primary widget-area')[0].style.display='none';"
+const val WEB_VIEW_JAVASCRIPT_REMOVE_FOOTER = "var footer = document.getElementsByClassName('site-footer')[0].style.display='none';"
 // Website has multiple forms! Header, not viewed and last viewed form!
-//const val WEB_VIEW_JAVASCRIPT_REMOVE_SEARCH = "javascript:(function() { var search = document.forms[2].style.display='none';  })()"
+const val WEB_VIEW_JAVASCRIPT_REMOVE_SEARCH = "var search = document.forms[2].style.display='none';"
 
-const val WEB_VIEW_JAVASCRIPT_REMOVE_CONTENT = "javascript:(function() { var cookieNotice = document.getElementsByClassName('cookie-notice-container')[0].style.display='none'; var header = document.getElementsByClassName('wrapper')[0].style.display='none'; var headerImage = document.getElementsByClassName('wp-post-image')[0].style.display='none'; var sidebar = document.getElementsByClassName('sidebar sidebar-primary widget-area')[0].style.display='none'; var footer = document.getElementsByClassName('site-footer')[0].style.display='none'; var search = document.forms[2].style.display='none'; } )()"
+//const val WEB_VIEW_JAVASCRIPT_REMOVE_CONTENT = "javascript:(function() { var cookieNotice = document.getElementsByClassName('cookie-notice-container')[0].style.display='none'; var header = document.getElementsByClassName('wrapper')[0].style.display='none'; var headerImage = document.getElementsByClassName('wp-post-image')[0].style.display='none'; var sidebar = document.getElementsByClassName('sidebar sidebar-primary widget-area')[0].style.display='none'; var footer = document.getElementsByClassName('site-footer')[0].style.display='none'; var search = document.forms[2].style.display='none'; "
+const val WEB_VIEW_JAVASCRIPT_REMOVE_CONTENT = "$WEB_VIEW_JAVASCRIPT_REMOVE_COOKIE_NOTICE $WEB_VIEW_JAVASCRIPT_REMOVE_HEADER $WEB_VIEW_JAVASCRIPT_REMOVE_HEADER_FEATURED_IMAGE $WEB_VIEW_JAVASCRIPT_REMOVE_SIDEBAR $WEB_VIEW_JAVASCRIPT_REMOVE_FOOTER $WEB_VIEW_JAVASCRIPT_REMOVE_SEARCH"
 
 /**
  * Constants for Social Media connect
