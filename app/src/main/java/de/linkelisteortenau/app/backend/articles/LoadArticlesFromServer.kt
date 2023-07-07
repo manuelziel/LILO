@@ -71,7 +71,7 @@ class LoadArticlesFromServer(val context: Context) {
 
             if (doc.hasText()) {
                 val mutableMap: MutableMap<EnumArticle, String> = EnumMap(EnumArticle::class.java)
-                val eArticles: Elements = doc.select("div.entry-container h2")
+                val eArticles: Elements = doc.select("div.post-wrapper h2")
                 val eLinks: MutableList<String> = eArticles.select("a[href]").eachAttr("href")
 
                 eArticles.forEachIndexed { index, element ->

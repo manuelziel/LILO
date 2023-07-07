@@ -2,36 +2,26 @@ package de.linkelisteortenau.app.ui.events
 
 /**
  * @author Manuel Ziel
- * @since 0.0.1 Beta 2022-11
+ * @since 0.0.1 Beta 2023-06
  *
- * Events Fragment for the App
+ * Events
  **/
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.RecyclerView
-import de.linkelisteortenau.app.R
-import de.linkelisteortenau.app.backend.events.DataEvents
-import de.linkelisteortenau.app.backend.notification.EnumNotificationBundle
-import de.linkelisteortenau.app.databinding.RecyclerViewBinding
-import de.linkelisteortenau.app.ui.events.list_view.*
+import de.linkelisteortenau.app.WEB_VIEW_URL_EVENTS
+import de.linkelisteortenau.app.databinding.FragmentWebViewBinding
+import de.linkelisteortenau.app.ui.WebViewController
 
 /**
- * Class for the Events Fragment Recycler
+ * Class for Content
  **/
-class EventsFragment : Fragment() {
-    private var _binding: RecyclerViewBinding? = null
+class EventsFragment: Fragment() {
+    private var _binding: FragmentWebViewBinding? = null
     private val binding get() = _binding!!
-
-    //private val newEventsActivityRequestCode = 1
-    private val contentListViewModel by viewModels<EventsListViewModel> {
-        EventsListViewModelFactory(requireContext())
-    }
 
     /**
      * Lifecycle
@@ -40,44 +30,24 @@ class EventsFragment : Fragment() {
      * @see <a href="https://developer.android.com/guide/fragments/lifecycle">Fragment Lifecycle</a>
      **/
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        _binding = RecyclerViewBinding.inflate(inflater, container, false)
+        _binding = FragmentWebViewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // Instantiates recyclerEventHeaderAdapter and recyclerEventsContentAdapter.
-        // Both adapters are added to concatEventAdapter. Which displays the contents sequentially
-        val recyclerEventHeaderAdapter = RecyclerEventHeaderAdapter()
-        val recyclerEventContentAdapter = RecyclerEventContentAdapter { content -> adapterEventOnClick(content) }
-        val concatEventAdapter = ConcatAdapter(recyclerEventHeaderAdapter, recyclerEventContentAdapter)
+        binding.progressBarWebView.isVisible = true
+        binding.textViewProgressBar.isVisible = true
+        binding.textViewWebView404Text.isVisible = false
+        binding.webView.isVisible = false
 
-        val recyclerView: RecyclerView = binding.recyclerView
-        recyclerView.adapter = concatEventAdapter
+        // View web content
+        val requireActivity = requireActivity()
+        val url = (WEB_VIEW_URL_EVENTS)
+        context?.let { WebViewController(it).run(requireActivity, binding, url, parentLink = url) }
 
-        contentListViewModel.eventsLiveData.observe(viewLifecycleOwner) { it ->
-            it?.let {
-                recyclerEventContentAdapter.submitList(it as MutableList<DataEvents>)
-                recyclerEventHeaderAdapter.updateEventCount(it.size)
-            }
-        }
         return root
-    }
-
-    /**
-     * Opens EventContentFragment when RecyclerView item is clicked.
-     *
-     * @param event as DataEvents
-     */
-    private fun adapterEventOnClick(
-        event: DataEvents
-    ) {
-        val extra = Bundle()
-        extra.putString(EnumNotificationBundle.LINK.string, event.link)
-
-        val navController = findNavController()
-        navController.navigate(R.id.nav_event_content, extra)
     }
 
     /**

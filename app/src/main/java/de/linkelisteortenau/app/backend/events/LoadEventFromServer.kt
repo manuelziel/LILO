@@ -8,8 +8,8 @@ package de.linkelisteortenau.app.backend.events
  **/
 import android.content.Context
 import android.util.Log
-import de.linkelisteortenau.app.TIME_MINUTE
 import de.linkelisteortenau.app.TIME_FORMAT_GLOBAL
+import de.linkelisteortenau.app.TIME_MINUTE
 import de.linkelisteortenau.app.WEB_VIEW_URL_EVENTS
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_LOAD_TEST_LINK
 import de.linkelisteortenau.app.backend.debug.DEBUG_EVENT_LOAD_TEST_TITLE
@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
 import java.io.IOException
 import java.util.EnumMap
 
@@ -56,95 +55,7 @@ class LoadEventFromServer(
      * **/
     fun loadEvents() {
         scope.launch {
-            loadEventsFunction()
-        }
-    }
-
-    /**
-     * Load all Events with Jsoup lib from https://www.Linke-Liste-Ortenau.de/termine/
-     * Session load timeout are disabled!
-     * All Elements are stored in "div.entry-content <ul <li"
-     *
-     * Load the elements from every link. Every element are stored in div.entry-container header h1
-     * @see <a href="https://www.linke-liste-ortenau.de/termine/">Events Page</a>
-     * @see <a href="https://www.linke-liste-ortenau.de/feed/eo-events/">Events Calendar</a>
-     **/
-    private val eventContent = "null" // No Content implemented
-    private fun loadEventsFunction() {
-        try {
-            val doc: Document = Jsoup.connect(WEB_VIEW_URL_EVENTS).timeout(0).get()
-            val mutableMap: MutableMap<EnumEvent, String> = EnumMap(EnumEvent::class.java)
-
-            if (doc.hasText()) {
-                mutableMap[EnumEvent.FLAG] = false.toString()
-                Events(context).setAllEventFlags(mutableMap) // Set all DB Event flags to false
-                val eContent: Elements = doc.select("div.entry-content ul li")
-                val eHref: Elements = eContent.select("a[href]")
-                var cnt = 0
-
-                if (eHref.hasText()) {
-                    for (i in eHref) {
-
-                        // Get the Link
-                        val eventLink = i.toString().substringAfter("href=\"").substringBefore("\">")
-
-                        // Get content from link
-                        val docCalRef: Document = Jsoup.connect(eventLink).timeout(0).get()
-
-                        // Get title from content
-                        val eTitleContent: Elements = docCalRef.select("div.entry-container header h1")
-                        val eTitle: Elements = eTitleContent.select("h1[class]")
-                        val eventTitle = eTitle.toString().substringAfter("entry-title\">").substringBefore("</h1")
-
-                        // Get start time and end time from content
-                        val eTimeMeta: Elements = docCalRef.select("div.eventorganiser-event-meta ul li")
-                        val eTime: Elements = eTimeMeta.select("time[datetime]")
-
-                        val eventStart = eTime.toString().substringAfter("<time itemprop=\"startDate\" datetime=\"").substringBefore("\">")
-                        val eventEnd = eTime.toString().substringAfter("<time itemprop=\"endDate\" datetime=\"").substringBefore("\">")
-
-                        mutableMap[EnumEvent.TITLE]     = eventTitle
-                        mutableMap[EnumEvent.LINK]      = eventLink
-                        mutableMap[EnumEvent.START]     = eventStart
-                        mutableMap[EnumEvent.END]       = eventEnd
-                        mutableMap[EnumEvent.CONTENT]   = eventContent
-                        mutableMap[EnumEvent.FLAG]      = true.toString()
-                        mutableMap[EnumEvent.PATTER]    = TIME_FORMAT_GLOBAL
-
-                        cnt++
-                        if ((cnt == 1) && (debug)) {
-                            val debugMutableMap: MutableMap<EnumEvent, String> = EnumMap(EnumEvent::class.java)
-                            val debugEventStart = Time(context).getDateFormat((Time(context).getUnixTime()) + TIME_MINUTE * 2)
-                            val debugEventEnd = Time(context).getDateFormat((Time(context).getUnixTime()) + TIME_MINUTE * 5)
-
-                            debugMutableMap[EnumEvent.TITLE]    = DEBUG_EVENT_LOAD_TEST_TITLE
-                            debugMutableMap[EnumEvent.LINK]     = DEBUG_EVENT_LOAD_TEST_LINK
-                            debugMutableMap[EnumEvent.START]    = debugEventStart
-                            debugMutableMap[EnumEvent.END]      = debugEventEnd
-                            debugMutableMap[EnumEvent.CONTENT]  = eventContent
-                            debugMutableMap[EnumEvent.FLAG]     = true.toString()
-                            debugMutableMap[EnumEvent.PATTER]   = TIME_FORMAT_GLOBAL
-
-                            Events(context).saveEvent(debugMutableMap)
-                        }
-
-                        if (debug) {
-                            Log.d(DEBUG_LOAD_EVENT, "Incoming ${eHref.size} Events $cnt is: $eventTitle from $eventStart to $eventEnd with link $eventLink \n")
-                        }
-
-                        Events(context).saveEvent(mutableMap)
-
-                        //if (cnt == eHref.size) {
-                            // Code here if end loop reached
-                        //}
-                    }
-
-                    // Show new Notifications
-                    BackgroundNotification(context).newNotifications()
-                }
-            }
-        } catch (e: IOException) {
-            Log.e(DEBUG_LOAD_EVENT, e.message.toString())
+            loadJSONFunction()
         }
     }
 
@@ -154,13 +65,15 @@ class LoadEventFromServer(
      *
      * @see <a href="https://www.linke-liste-ortenau.de/termine/">Events Page</a>
      **/
-    fun loadJSONFunction() {
+    private val eventContent = "null" // No Content implemented
+    private fun loadJSONFunction() {
         try {
-            val doc: Document = Jsoup.connect("https://www.linke-liste-ortenau.de/events/").timeout(0).get()
+            val doc: Document = Jsoup.connect(WEB_VIEW_URL_EVENTS).timeout(0).get()
             var cnt = 0
 
             // In this case you want the first script tag
             val e = doc.select("script[type=application/ld+json]")
+
             val array = JSONArray(e.html())
             val lenght = array.length() - 1
 

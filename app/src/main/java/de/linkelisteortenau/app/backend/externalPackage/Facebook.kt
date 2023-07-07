@@ -4,7 +4,7 @@ package de.linkelisteortenau.app.backend.externalPackage
  * @author Manuel Ziel
  * @since 0.0.1 Beta 2023-01
  *
- * Invitation link to Facebook Group
+ * Link to Facebook Profile
  **/
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,7 @@ import android.net.Uri
 import de.linkelisteortenau.app.*
 
 /**
- * Class for Facebook Group
+ * Class for Facebook Profile
  *
  * @param context as Context
  **/
@@ -22,10 +22,10 @@ class Facebook(
     ) {
 
     /**
-     * Function to open the Facebook app with the group link to the Group,
+     * Function to open the Facebook app with the group link,
      * or redirect to the mobile website if the app is not installed.
      **/
-    fun performToGroup() {
+    fun openFacebookProfile() {
         if (isFacebookAppInstalled()) {
             val facebookIntent = Intent(Intent.ACTION_VIEW)
             val facebookUrl = getFacebookPageURL()

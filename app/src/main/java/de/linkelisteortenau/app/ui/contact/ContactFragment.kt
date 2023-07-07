@@ -14,9 +14,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import de.linkelisteortenau.app.backend.externalPackage.Facebook
+import de.linkelisteortenau.app.backend.externalPackage.Instagram
 import de.linkelisteortenau.app.backend.externalPackage.MailTo
 import de.linkelisteortenau.app.backend.externalPackage.Signal
 import de.linkelisteortenau.app.backend.externalPackage.Telegram
+import de.linkelisteortenau.app.backend.externalPackage.Youtube
 import de.linkelisteortenau.app.databinding.FragmentContactBinding
 
 /**
@@ -48,6 +50,10 @@ class ContactFragment : Fragment() {
         val buttonTxtTelegram: TextView = binding.txtTelegramGroup
         val buttonImgFacebook: ImageView = binding.imageFacebook
         val buttonTxtFacebook: TextView = binding.txtFacebook
+        val buttonImgInstagram: ImageView = binding.imageInstagram
+        val buttonTxtInstagram: TextView = binding.txtInstagram
+        val buttonImgYoutube: ImageView = binding.imageYoutube
+        val buttonTxtYoutube: TextView = binding.txtYoutube
 
         // Mail to Organisation
         buttonImgMail.setOnClickListener {
@@ -58,31 +64,49 @@ class ContactFragment : Fragment() {
             context?.let { MailTo(it).performEmail() }
         }
 
-        // Signal group link
+        // Signal Profile
         buttonImgSignal.setOnClickListener {
-            context?.let { Signal(it).performToGroupLink() }
+            context?.let { Signal(it).openSignalProfile() }
         }
 
         buttonTxtSignal.setOnClickListener {
-            context?.let { Signal(it).performToGroupLink() }
+            context?.let { Signal(it).openSignalProfile() }
         }
 
-        // Telegram group link
+        // Telegram Profile
         buttonImgTelegram.setOnClickListener {
-            context?.let { Telegram(it).performToGroupLink() }
+            context?.let { Telegram(it).openTelegramProfile() }
         }
 
         buttonTxtTelegram.setOnClickListener {
-            context?.let { Telegram(it).performToGroupLink() }
+            context?.let { Telegram(it).openTelegramProfile() }
         }
 
-        // Facebook follow
+        // Facebook Profile
         buttonImgFacebook.setOnClickListener {
-            context?.let { Facebook(it).performToGroup() }
+            context?.let { Facebook(it).openFacebookProfile() }
         }
 
         buttonTxtFacebook.setOnClickListener {
-            context?.let { Facebook(it).performToGroup() }
+            context?.let { Facebook(it).openFacebookProfile() }
+        }
+
+        // Instagram Profile
+        buttonImgInstagram.setOnClickListener {
+            context?.let { Instagram(it).openInstagramProfile() }
+        }
+
+        buttonTxtInstagram.setOnClickListener {
+            context?.let { Instagram(it).openInstagramProfile() }
+        }
+
+        // YouTube Profile
+        buttonImgYoutube.setOnClickListener {
+            context?.let { Youtube(it).openYouTubeProfile() }
+        }
+
+        buttonTxtYoutube.setOnClickListener {
+            context?.let { Youtube(it).openYouTubeProfile() }
         }
         return root
     }

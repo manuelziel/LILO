@@ -132,9 +132,6 @@ class WebViewController(
                         webView404Text.isVisible    = false
                         webView.isVisible           = true
                     }
-
-                webView.evaluateJavascript(WEB_VIEW_JAVASCRIPT_REMOVE_SIDEBAR) {}
-                webView.evaluateJavascript(WEB_VIEW_JAVASCRIPT_REMOVE_FOOTER) {}
             }
 
             // This method is called when an error occurs while loading a page in the WebView

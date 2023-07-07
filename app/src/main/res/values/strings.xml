@@ -61,6 +61,8 @@
     <string name="description_image_signal">Logo Signal</string>
     <string name="description_image_telegram">Logo Telegram</string>
     <string name="description_image_facebook">Logo Facebook</string>
+    <string name="description_image_instagram">Logo Instagram</string>
+    <string name="description_image_youtube">Logo Youtube</string>
 
     //! -- WebView Fragments-->
     <string name="webview_search">Search…</string>
@@ -97,6 +99,8 @@
     <string name="contact_signal_join">Join our signal group</string>
     <string name="contact_telegram_join">Join our telegram group</string>
     <string name="contact_facebook_follow">Follow our Facebook-Site</string>
+    <string name="contact_instagram_follow">Follow our Instgram-Site</string>
+    <string name="contact_youtube_follow">Follow our Youtube-Site</string>
     <string name="contact_mail_address">info@linke-liste-ortenau.de</string>
     <string name="contact_mail_subject">Contact from User</string>
     <string name="contact_mail_text">Hello LiLO, </string>
