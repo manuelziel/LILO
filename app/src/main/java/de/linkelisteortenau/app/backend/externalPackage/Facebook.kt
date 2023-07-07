@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import de.linkelisteortenau.app.*
 
 /**
@@ -50,13 +51,13 @@ class Facebook(
     }
 
     /**
-     * Method to get the right URL to use in the intent
+     * Method to get the right URL for the profile
      */
     private fun getFacebookPageURL(): String {
         val packageManager: PackageManager = context.packageManager
         return try {
             val versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).longVersionCode
-            if (versionCode >= 3002850) { //newer versions of FB app
+            if (versionCode >= 3002850) { //newer versions of Facebook app
                 "fb://facewebmodal/f?href=$FACEBOOK_GROUP_URL"
             } else { //older versions of FB app
                 "fb://page/$FACEBOOK_PAGE_ID"
