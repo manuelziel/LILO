@@ -111,7 +111,9 @@ const val WEB_VIEW_JAVASCRIPT_REMOVE_CONTENT = "$WEB_VIEW_JAVASCRIPT_REMOVE_COOK
  **/
 const val SIGNAL_GROUP_URL = "https://signal.group/#CjQKINwyW59Pd6Ixd-KX9B3_Zon7cdms_pkv9JcVbzP9AdA1EhDuHcVJOJQCCutlhee5lDKN"
 const val TELEGRAM_GROUP_URL = "https://t.me/liloinfogrp"
-const val FACEBOOK_GROUP_URL = "https://www.facebook.com/linkelisteortenau"
+//const val FACEBOOK_GROUP_URL = "https://www.facebook.com/linkelisteortenau"
+// TODO
+const val FACEBOOK_GROUP_URL = "fb://page/linkelisteortenau"
 const val FACEBOOK_PAGE_ID = "linkelisteortenau"
 const val INSTAGRAM_PAGE_ID = "lilolinkeliste"
 const val YOUTUBE_PAGE_ID = "@liloortenau1138"

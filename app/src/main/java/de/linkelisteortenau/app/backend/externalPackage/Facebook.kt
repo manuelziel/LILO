@@ -20,51 +20,14 @@ import de.linkelisteortenau.app.*
  **/
 class Facebook(
     val context: Context
-    ) {
+) {
 
     /**
      * Function to open the Facebook app with the group link,
      * or redirect to the mobile website if the app is not installed.
      **/
     fun openFacebookProfile() {
-        if (isFacebookAppInstalled()) {
-            val facebookIntent = Intent(Intent.ACTION_VIEW)
-            val facebookUrl = getFacebookPageURL()
-            facebookIntent.data = Uri.parse(facebookUrl)
-            context.startActivity(facebookIntent)
-        } else {
-            redirectToFacebookMobileWebsite()
-        }
-    }
-
-    /**
-     * Method to check if the Facebook app is installed on the user's device
-     */
-    private fun isFacebookAppInstalled(): Boolean {
-        val packageManager: PackageManager = context.packageManager
-        return try {
-            packageManager.getPackageInfo("com.facebook.katana", 0)
-            true
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
-    }
-
-    /**
-     * Method to get the right URL for the profile
-     */
-    private fun getFacebookPageURL(): String {
-        val packageManager: PackageManager = context.packageManager
-        return try {
-            val versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).longVersionCode
-            if (versionCode >= 3002850) { //newer versions of Facebook app
-                "fb://facewebmodal/f?href=$FACEBOOK_GROUP_URL"
-            } else { //older versions of FB app
-                "fb://page/$FACEBOOK_PAGE_ID"
-            }
-        } catch (e: PackageManager.NameNotFoundException) {
-            FACEBOOK_GROUP_URL //normal web url
-        }
+        redirectToFacebookMobileWebsite()
     }
 
     /**
