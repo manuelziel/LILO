@@ -41,6 +41,10 @@
     <string name="menu_search">Search</string>
     <string name="menu_event">Events</string>
 
+    <string name="menu_district_council">District Council</string>
+    <string name="menu_district_council_votes">Votes</string>
+    <string name="menu_district_council_all">From the District Council</string>
+
     <string name="menu_program">Program</string>
     <string name="menu_health_care">Health Care</string>
     <string name="menu_local_transport">Local Transport</string>

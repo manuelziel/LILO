@@ -8,10 +8,8 @@ package de.linkelisteortenau.app.backend.externalPackage
  **/
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import de.linkelisteortenau.app.*
+import de.linkelisteortenau.app.FACEBOOK_GROUP_URL
 
 /**
  * Class for Facebook Profile

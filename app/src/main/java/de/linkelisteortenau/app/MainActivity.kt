@@ -15,6 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
 import de.linkelisteortenau.app.backend.BackgroundBroadcastReceiver
 import de.linkelisteortenau.app.backend.defaults.Defaults
@@ -53,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        // Start background Service
-        startBackgroundService()
+        // Check and start  background Service
+        checkBackgroundServiceStatus()
 
         // Check Privacy Policy is set or Intent to privacy policy activity.
         userPrivacyPolicy()
@@ -133,9 +135,17 @@ class MainActivity : AppCompatActivity() {
     /**
      * Start background Worker
      **/
-    private fun startBackgroundService() {
-        if (Preferences(this).getUserPrivacyPolicy()) {
-            BackgroundBroadcastReceiver().workRequest(this)
+    private fun checkBackgroundServiceStatus() {
+        val workManager = WorkManager.getInstance(this)
+
+        val workInfoLiveData = workManager.getWorkInfosForUniqueWorkLiveData("LILO")
+        workInfoLiveData.observeForever { workInfos ->
+            for (workInfo in workInfos) {
+                if ((workInfo.state != WorkInfo.State.RUNNING || workInfo.state != WorkInfo.State.ENQUEUED)
+                && (Preferences(this).getUserPrivacyPolicy())){
+                    BackgroundBroadcastReceiver().workRequest(this)
+                }
+            }
         }
     }
 

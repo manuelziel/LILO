@@ -33,7 +33,7 @@ class Defaults(
         preferences.setSystemDebug(false)
         preferences.setUserPrivacyPolicy(true)
         //preferences.setLocale()
-        preferences.setUserShowEventsNotification(false)
+        preferences.setUserShowEventsNotification(true)
         //preferences.setUserEventsNotificationTimeMultiplicator(1)
         preferences.setUserShowArticlesNotification(true)
 

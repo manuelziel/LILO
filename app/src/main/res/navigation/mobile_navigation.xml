@@ -24,6 +24,18 @@
         tools:layout="@layout/fragment_web_view" />
 
     <fragment
+        android:id="@+id/nav_district_council_votes"
+        android:name="de.linkelisteortenau.app.ui.district_council.DistrictCouncilVotesFragment"
+        android:label="@string/menu_district_council_votes"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
+        android:id="@+id/nav_district_council_all"
+        android:name="de.linkelisteortenau.app.ui.district_council.DistrictCouncilFragment"
+        android:label="@string/menu_district_council_all"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
         android:id="@+id/nav_health_care"
         android:name="de.linkelisteortenau.app.ui.program.HealthCareFragment"
         android:label="@string/menu_health_care"
@@ -74,8 +86,7 @@
     <fragment
         android:id="@+id/nav_setup"
         android:name="de.linkelisteortenau.app.ui.preferences.PreferencesFragment"
-        android:label="@string/menu_preference"
-        tools:layout="@layout/fragment_preference" />
+        android:label="@string/menu_preference" />
 
     <fragment
         android:id="@+id/nav_event_content"

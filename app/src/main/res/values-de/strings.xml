@@ -41,6 +41,10 @@
     <string name="menu_search">Suche</string>
     <string name="menu_event">Termine</string>
 
+    <string name="menu_district_council">Kreistag</string>
+    <string name="menu_district_council_votes">Abstimmungen</string>
+    <string name="menu_district_council_all">Aus dem Kreistag</string>
+    
     <string name="menu_program">Programm</string>
     <string name="menu_health_care">Gesundheitsvorsorge</string>
     <string name="menu_local_transport">Nahverkehr</string>

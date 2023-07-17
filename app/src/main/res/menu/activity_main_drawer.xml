@@ -20,6 +20,25 @@
             android:title="@string/menu_event" />
 
         <item
+            android:id="@+id/nav_district_council"
+            android:title="@string/menu_district_council"
+            android:visible="true">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_district_council_votes"
+                        android:icon="@drawable/ic_menu_vote"
+                        android:title="@string/menu_district_council_votes" />
+
+                    <item
+                        android:id="@+id/nav_district_council_all"
+                        android:icon="@drawable/ic_menu_akropolis"
+                        android:title="@string/menu_district_council_all" />
+                </group>
+            </menu>
+        </item>
+
+        <item
             android:id="@+id/nav_program"
             android:title="@string/menu_program"
             android:visible="true">
