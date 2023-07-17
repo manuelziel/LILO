@@ -20,6 +20,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="nav_c">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="nav_contact">
                     <value>
                       <LayoutPositions>
@@ -44,7 +56,7 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="nav_district_council">
+                  <entry key="nav_district_council_all">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">

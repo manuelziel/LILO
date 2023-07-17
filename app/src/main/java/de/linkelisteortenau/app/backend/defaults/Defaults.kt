@@ -49,6 +49,8 @@ class Defaults(
     ) {
         if (preferences.getAppVersionCode() != BuildConfig.VERSION_CODE) {
             // add new preferences here
+            //preferences.setUserShowEventsNotification(true)
+            //preferences.setUserShowArticlesNotification(true)
             preferences.setAppVersionCode(BuildConfig.VERSION_CODE)
 
             if (debug) {

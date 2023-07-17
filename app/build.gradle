@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     namespace 'de.linkelisteortenau.app'
-    compileSdkVersion 33
+    compileSdkVersion 34
     buildToolsVersion '33.0.0'
 
     dataBinding {
@@ -29,9 +29,9 @@ android {
     defaultConfig {
         applicationId "de.linkelisteortenau.app"
         minSdkVersion 28
-        targetSdkVersion 33
-        versionCode 9
-        versionName "Engels 0.0.1-alpha"
+        targetSdkVersion 34
+        versionCode 10
+        versionName "Engels 0.0.1-beta"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

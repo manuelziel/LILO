@@ -88,6 +88,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.nav_home,
                 R.id.nav_event,
+                R.id.nav_district_council_votes,
+                R.id.nav_district_council_all,
                 R.id.nav_health_care,
                 R.id.nav_local_transport,
                 R.id.nav_housing,

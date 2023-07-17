@@ -20,7 +20,6 @@ import de.linkelisteortenau.app.backend.sql.events.EventUpdateDB
 import de.linkelisteortenau.app.backend.time.EnumTime
 import de.linkelisteortenau.app.backend.time.Time
 import java.util.EnumMap
-import kotlin.random.Random
 
 /**
  * Global Enum for Events.
@@ -181,37 +180,6 @@ class Events(
      **/
     private fun getEvents(): ArrayList<MutableMap<EnumEvent, String>> {
         return eventGetDB.readData()
-    }
-
-    /**
-     * Get all Events from SQL as Data List.
-     *
-     * @return List as DataEvents
-     **/
-    fun getEventsAsDataList(): List<DataEvents> {
-        val events = getEvents()
-            .filter { it[EnumEvent.TITLE]?.isNotBlank() == true && it[EnumEvent.START]?.isNotBlank() == true }
-            .mapNotNull { event ->
-                val startAsHashMap = time.dateFormatToHumanTime(event[EnumEvent.START]?.toLongOrNull() ?: return@mapNotNull null)
-                val endAsHashMap = time.dateFormatToHumanTime(event[EnumEvent.END]?.toLongOrNull() ?: return@mapNotNull null)
-                val weekday = time.dateFormatToHumanTime(event[EnumEvent.START]?.toLongOrNull() ?: return@mapNotNull null)
-                val date = "${startAsHashMap[EnumTime.DAY]}.${startAsHashMap[EnumTime.MONTH]}"
-                val start = "${startAsHashMap[EnumTime.HOUR]}:${startAsHashMap[EnumTime.MINUTE]}"
-                val end = "${endAsHashMap[EnumTime.HOUR]}:${endAsHashMap[EnumTime.MINUTE]} ${context.getString(R.string.event_recycler_event_clock)}"
-                DataEvents(
-                    Random.nextLong(),
-                    event[EnumEvent.TITLE]!!,
-                    weekday[EnumTime.WEEKDAY]!!,
-                    date,
-                    start,
-                    end,
-                    event[EnumEvent.LINK] ?: ""
-                )
-            }
-        if (debug) {
-            Log.d(DEBUG_EVENT, "Events DataAsList: \"$events\" \n\n")
-        }
-        return events
     }
 
     /**

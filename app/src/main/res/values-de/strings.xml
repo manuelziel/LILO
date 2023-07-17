@@ -56,6 +56,7 @@
     <string name="menu_about">Über uns</string>
     <string name="menu_lilo">LiLO</string>
     <string name="menu_contact">Kontakt</string>
+    <string name="menu_member">Mitglieder</string>
     <string name="menu_preference">Einstellungen</string>
 
     //! -- Description Content-->
@@ -74,17 +75,6 @@
     <string name="webview_percent">%</string>
     <string name="webview_error_no_webpage">Hopla… hier ist etwas schief gelaufen.</string>
     <string name="webview_error_no_connection_to_server">Keine Verbindung!</string>
-
-    //! -- Events Recycler
-    <string name="event_header_title">Alle Veranstaltungen</string>
-    <string name="event_header_description">Eine Liste mit allen kommenden Veranstaltungen</string>
-    <string name="event_recycler_event_title">Event Titel</string>
-    <string name="event_recycler_event_weekday">Wochentag</string>
-    <string name="event_recycler_event_day">Tag</string>
-    <string name="event_recycler_event_start_time">time</string>
-    <string name="event_recycler_event_end_text"> - </string>
-    <string name="event_recycler_event_end_time">time</string>
-    <string name="event_recycler_event_clock">Uhr</string>
 
     //! -- Share Action Button Floating-->
     <string name="share_chooser_title">Share:</string>

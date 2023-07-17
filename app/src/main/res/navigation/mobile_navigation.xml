@@ -84,6 +84,12 @@
         tools:layout="@layout/fragment_web_view" />
 
     <fragment
+        android:id="@+id/nav_member"
+        android:name="de.linkelisteortenau.app.ui.member.MemberFragment"
+        android:label="@string/menu_member"
+        tools:layout="@layout/fragment_web_view" />
+
+    <fragment
         android:id="@+id/nav_setup"
         android:name="de.linkelisteortenau.app.ui.preferences.PreferencesFragment"
         android:label="@string/menu_preference" />
